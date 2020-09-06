@@ -16,6 +16,8 @@ import {
   Snackbar
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import moment from 'moment';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -26,11 +28,18 @@ const ProfileDetails = ({ className, ...rest }) => {
     success = useSelector(state => state.error.success),
     dispatch = useDispatch();
   const [values, setValues] = useState({
-    patientId: '',
-    email: '',
-    phone: '',
-  }),
-    [open, setOpen] = useState(false);
+      itemName: '',
+      total: '',
+      importData: '',
+      exportData: '',
+      leftData: '',
+      usedData: '',
+      date: '',
+    }),
+    [open, setOpen] = useState(false),
+    [today, setToday] = useState(''),
+    [itemName, setItemName] = useState(null),
+    [inputValue, setInputValue] = useState('');
 
   const handleChange = (event) => {
     setValues({
@@ -39,14 +48,19 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
 
+
   const handleApiResponse = (success) => {
     if (success) {
       setValues({
         ...values,
-        patientId: '',
-        email: '',
-        phone: '',
+        total: '',
+        importData: '',
+        exportData: '',
+        leftData: '',
+        usedData: '',
+        date: '',
       });
+      setItemName('');
     }
   }
   
@@ -63,8 +77,18 @@ const ProfileDetails = ({ className, ...rest }) => {
   };
 
   const handleSubmit = () => {
-    console.log(values);
-    dispatch(appActions.updatePatientId(values));
+    const newItem = {
+      itemName: itemName,
+      total: values.total,
+      importData: values.importData,
+      exportData: values.exportData,
+      leftData: values.leftData,
+      usedData: parseFloat(values.exportData) - parseFloat(values.leftData),
+      date: values.date
+    }
+
+    dispatch(appActions.getNewItem(newItem));
+    dispatch(appActions.addNewItem(newItem));
   }
 
   useEffect(() => {
@@ -76,6 +100,15 @@ const ProfileDetails = ({ className, ...rest }) => {
       handleApiResponse(success);
       handleOpen(success);
     }
+  }, [success]);
+
+  useEffect(() => {
+    const today = moment().format('YYYY-MM-DD');
+    console.log(today);
+    setValues({
+      ...values,
+      date: today,
+    });
   }, []);
 
   return (
@@ -97,8 +130,8 @@ const ProfileDetails = ({ className, ...rest }) => {
       </Snackbar>
       <Card>
         <CardHeader
-          subheader="The information can not edit after update."
-          title="Patient ID"
+          subheader="Nhớ kiểm tra nguyên vật liệu sau mỗi ngày bán hàng."
+          title="Kiểm tra nguyên vật liệu"
         />
         <Divider />
         <CardContent>
@@ -111,14 +144,51 @@ const ProfileDetails = ({ className, ...rest }) => {
               md={6}
               xs={12}
             >
+              <Autocomplete
+                id="combo-box-demo"
+                value={itemName}
+                options={fakeData.map((option) => option.title)}
+                onChange={(event, value) => setItemName(value)}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                renderInput={(params) => <TextField {...params} label="Tên nguyên liệu" variant="outlined" />}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Ngày kiểm tra"
+                name="date"
+                id="date"
+                type="date"
+                onChange={handleChange}
+                required
+                value={values.date}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
               <TextField
                 fullWidth
                 //helperText="Please specify the first name"
-                label="Patient ID"
-                name="patientId"
+                label="Tồn kho"
+                name="total"
                 onChange={handleChange}
                 required
-                value={values.patientId}
+                value={values.total}
                 variant="outlined"
               />
             </Grid>
@@ -129,11 +199,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
-                name="email"
+                label="Nhập kho"
+                name="importData"
                 onChange={handleChange}
                 //required
-                value={values.email}
+                value={values.importData}
                 variant="outlined"
               />
             </Grid>
@@ -144,15 +214,44 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                label="Xuất kho"
+                name="exportData"
                 onChange={handleChange}
                 //required
-                type="number"
-                value={values.phone}
+                value={values.exportData}
                 variant="outlined"
               />
             </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Nguyên liệu còn lại tại quầy"
+                name="leftData"
+                onChange={handleChange}
+                required
+                value={values.leftData}
+                variant="outlined"
+              />
+            </Grid>
+            {/* <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Nguyên liệu đã sử dụng"
+                name="usedData"
+                onChange={handleChange}
+                //required
+                value={values.usedData}
+                variant="outlined"
+              />
+            </Grid> */}
           </Grid>
         </CardContent>
         <Divider />
@@ -166,13 +265,20 @@ const ProfileDetails = ({ className, ...rest }) => {
             variant="contained"
             onClick={() => handleSubmit()}
           >
-            Update Patient ID
+            Lưu
           </Button>
         </Box>
       </Card>
     </form>
   );
 };
+
+const fakeData = [
+  { title: 'Si-rô', unit: 'chai' },
+  { title: 'Sữa chua uống', unit: 'chai' },
+  { title: 'Sữa chua ăn', unit: 'hũ' },
+  { title: 'Coffee', unit: 'gói' },
+];
 
 ProfileDetails.propTypes = {
   className: PropTypes.string

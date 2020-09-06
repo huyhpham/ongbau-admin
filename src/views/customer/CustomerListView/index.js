@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
-  makeStyles
+  makeStyles,
+  Tab,
+  Tabs,
+  Paper
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import * as appActions from '../../../store/actions/app';
 import Page from 'src/components/Page';
@@ -18,15 +22,47 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box mt={3}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 const CustomerListView = () => {
   const classes = useStyles();
   const dispatch = useDispatch(),
     [customers, setCustomers] = useState([]),
     customerList = useSelector(state => state.app.customerList);
+  const [value, setValue] = React.useState(0);
   
   const onChangeCustomerList = value => {
     setCustomers(value);
   }
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     dispatch(appActions.getCustomerList());
@@ -44,12 +80,36 @@ const CustomerListView = () => {
       title="Customers"
     >
       <Container maxWidth={false}>
-        <Box mt={3}>
+        <Paper 
+          square
+        >
+          <Tabs
+            value={value}
+            onChange={handleChange}
+          >
+            <Tab label="Nguyên vật liệu" {...a11yProps(0)} />
+            <Tab label="Thu chi" {...a11yProps(1)} />
+            {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
+          </Tabs>
+        </Paper>
+        <TabPanel value={value} index={0}>
           <Results customers={customers} />
-        </Box>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Item Two
+        </TabPanel>
+        {/* <TabPanel value={value} index={2}>
+          Item Three
+        </TabPanel> */}
       </Container>
     </Page>
   );
+};
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 export default CustomerListView;

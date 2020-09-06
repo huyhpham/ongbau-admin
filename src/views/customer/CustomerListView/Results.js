@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -22,40 +22,56 @@ const Results = ({ className, customers, ...rest }) => {
   const updateCustomer = (updateData) => {
     console.log('Hello', updateData);
   }
+  const [filterValue, setFilterValue] = useState({});
 
   const itemsHeader = [
     {
+      id: 7,
+      title: "Date",
+      field: "date",
+      render: row => <span>{  moment(row["created_date"]).format('DD/MM/YYYY') }</span>
+    },
+    {
       id: 1,
-      title: "Kho",
-      field: "total",
+      title: "Nguyên liệu",
+      field: "itemName",
     },
     {
       id: 2,
+      title: "Kho",
+      field: "total",
+      // field: "importData",
+      // field: "leftData",
+      // render: row => <span>{  parseFloat(row["total"]) + parseFloat(row["importData"]) - parseFloat(row["leftData"]) }</span>
+    },
+    {
+      id: 3,
       title: "Nhập",
       field: "importData"
     },
     {
-      id: 3,
+      id: 4,
       title: "Xuất",
       field: "exportData"
     },
     {
-      id: 4,
+      id: 5,
       title: "Còn lại tại quầy",
       field: "leftData",
     },
     {
-      id: 5,
+      id: 6,
       title: "Sử dụng",
       field: "usedData"
     },
-    {
-      id: 6,
-      title: "Active",
-      field: "date",
-      render: row => <span>{  moment(row["created_date"]).format('DD/MM/YYYY') }</span>
-    },
-  ]
+    
+  ];
+  
+  useEffect(() => {
+    customers.forEach((item) => {
+      console.log(item);
+    });
+  }, []);
 
   return (
     <Card
@@ -82,6 +98,7 @@ const Results = ({ className, customers, ...rest }) => {
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
+          filtering: true
         }}
       />
     </Card>

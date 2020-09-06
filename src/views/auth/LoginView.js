@@ -66,7 +66,7 @@ const LoginView = () => {
           <Formik
             initialValues={{
               //email: '',
-              userName: '',
+              username: '',
               password: ''
             }}
             validationSchema={Yup.object().shape({
@@ -110,11 +110,11 @@ const LoginView = () => {
                   helperText={errorMessage}
                   label="User Name"
                   margin="normal"
-                  name="userName"
+                  name="username"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="userName"
-                  value={values.userName}
+                  type="username"
+                  value={values.username}
                   variant="outlined"
                 />
                 <TextField

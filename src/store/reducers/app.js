@@ -6,6 +6,7 @@ const initialState = {
 	customerList: [],
 	currMonthCustomer: 0,
 	lastMonthCustomer: 0,
+	newItem: {}
 };
 
 export default (state = initialState, action) => {
@@ -19,7 +20,9 @@ export default (state = initialState, action) => {
 	case Actions.GetCurrMonthCustomer: 
 		 return { ...state, currMonthCustomer: action.values };
 	case Actions.GetLastMonthCustomer: 
-	 	return { ...state, lastMonthCustomer: action.values };
+		 return { ...state, lastMonthCustomer: action.values };
+	case Actions.GetNewItem:
+		return { ...state, newItem: action.values };
 	default:
 		return state;
 	}

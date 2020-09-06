@@ -13,3 +13,6 @@ export const SaveCustomerList                   = '@APP:SAVE-CUSTOMER-LIST';
 
 export const GetError                           = '@APP:GET-ERROR';
 export const GetSuccess                         = '@APP:GET-SUCCESS';
+
+export const AddNewItem                         = '@APP:ADD-NEW-ITEM';
+export const GetNewItem                         = '@APP:GET-NEW-ITEM';

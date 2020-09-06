@@ -2,7 +2,11 @@ import React from 'react';
 import {
   Container,
   Grid,
-  makeStyles
+  makeStyles,
+  Tab,
+  Tabs,
+  Paper,
+  Box
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Profile from './Profile';
@@ -17,35 +21,89 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box mt={3}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 const Account = () => {
   const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Page
       className={classes.root}
       title="Patient"
     >
-      <Container maxWidth="lg">
-        {/* <Grid
-          container
-          spacing={3} */}
-          {/* <Grid
-            item
-            lg={4}
-            md={6}
-            xs={12}
+      <Container maxWidth="false">
+        <Paper 
+            square
           >
-            <Profile />
-          </Grid> */}
-          {/* <Grid
-            item
-            lg={12}
-            md={6}
-            xs={12}
-          > */}
-            <ProfileDetails />
-          {/* </Grid> */}
-        {/* </Grid> */}
+            <Tabs
+              value={value}
+              onChange={handleChange}
+            >
+              <Tab label="Nhập nguyên liệu" {...a11yProps(0)} />
+              <Tab label="Tính lương" {...a11yProps(1)} />
+              <Tab label="Tính thu chi" {...a11yProps(2)} />
+            </Tabs>
+          </Paper>
+          <TabPanel value={value} index={0}>
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={5}
+                md={6}
+                xs={12}
+              >
+                <Profile />
+              </Grid>
+              <Grid
+                item
+                lg={7}
+                md={6}
+                xs={12}
+              >
+                <ProfileDetails />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            Item Two
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            Item Three
+          </TabPanel>
       </Container>
     </Page>
   );

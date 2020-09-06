@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -13,15 +12,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
-};
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -33,6 +24,7 @@ const useStyles = makeStyles(() => ({
 
 const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
+  const newItem = useSelector(state => state.app.newItem);
 
   return (
     <Card
@@ -43,36 +35,99 @@ const Profile = ({ className, ...rest }) => {
         <Box
           alignItems="center"
           display="flex"
-          flexDirection="column"
+          flexDirection="row"
         >
-          <Avatar
-            className={classes.avatar}
-            src={user.avatar}
-          />
-          <Typography
+          <Box
+            display="flex"
+            flexDirection="column"
+          >
+            <Typography
             color="textPrimary"
             gutterBottom
-            variant="h3"
+            variant="h4"
+            >
+              Ngày kiểm kho:  
+            </Typography>
+            <Typography
+            color="textPrimary"
+            gutterBottom
+            variant="h4"
+            >
+              {`Nguyên liệu:`+' '}
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Tồn kho:
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Nhập kho:
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Xuất kho:
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Đã sử dụng:
+            </Typography>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            ml={2}
           >
-            {user.name}
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
-          </Typography>
+            <Typography
+              color="textPrimary"
+              gutterBottom
+              variant="h4"
+            >
+              {moment(newItem.date).format('dddd, DD MMMM, YYYY')}
+            </Typography>
+            <Typography
+              color="textPrimary"
+              gutterBottom
+              variant="h4"
+            >
+              {newItem.itemName}
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              {newItem.total}
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              {newItem.importData}
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              {newItem.exportData}
+            </Typography>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              {newItem.usedData}
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
-      <Divider />
-      <CardActions>
+      {/* <Divider /> */}
+      {/* <CardActions>
         <Button
           color="primary"
           fullWidth
@@ -80,7 +135,7 @@ const Profile = ({ className, ...rest }) => {
         >
           Upload picture
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 };

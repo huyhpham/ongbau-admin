@@ -5,12 +5,12 @@ import axios from 'axios';
 import { api } from '../../utils/configs';
 
 function loginApi(authParams) {
-    return axios.post(`${api.live}/login-user`, authParams);
+    return axios.post(`${api.live}/auth/login`, authParams);
 }
 
 function getCustomerList() {
     const token = localStorage.getItem('silverBullet');
-    return axios.get(`${api.live}/customers`, 
+    return axios.get(`${api.live}/item/`, 
         { headers: { Authorization: token } }
     );
 }
@@ -35,6 +35,10 @@ function getCustomerListByMonth(values) {
     return axios.post(`${api.live}/total-customer`, values, {
         headers: { Authorization: token }
     });
+}
+
+function addNewItem(values) {
+    return axios.post(`${api.live}/item/create-item`, values);
 }
 
 export function* loginSaga(action) {
@@ -116,6 +120,17 @@ export function* getCustomerListByMonthSaga(action) {
     }
 }
 
+export function* addNewItemSaga(action) {
+    try {
+        const response = yield call(addNewItem, action.values);
+        if (response.status === 200) {
+            console.log(response);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export default function* userSagas() {
     yield all([
        takeEvery(actions.Login, loginSaga),
@@ -123,5 +138,6 @@ export default function* userSagas() {
        takeEvery(actions.UpdatePatientId, updatePatientIdSaga),
        takeEvery(actions.UpdateUserPassword, updateUserPasswordSaga),
        takeEvery(actions.GetCustomerListByMonth, getCustomerListByMonthSaga),
+       takeEvery(actions.AddNewItem, addNewItemSaga),
     ]);
 }

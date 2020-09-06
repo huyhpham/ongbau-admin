@@ -47,3 +47,11 @@ export function getCurrMonthCustomer(values) {
 export function getLastMonthCustomer(values) {
 	return { type: Actions.GetLastMonthCustomer, values }
 }
+
+export function addNewItem(values) {
+	return { type: Actions.AddNewItem, values }
+}
+
+export function getNewItem(values) {
+	return { type: Actions.GetNewItem, values }
+}

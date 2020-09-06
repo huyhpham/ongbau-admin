@@ -21,7 +21,8 @@ import {
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  Edit as EditIcon,
+  Archive as ArchiveIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -35,12 +36,12 @@ const items = [
   {
     href: '/dashboard',
     icon: BarChartIcon,
-    title: 'Dashboard'
+    title: 'Tổng quan'
   },
   {
     href: '/customers',
-    icon: UsersIcon,
-    title: 'Customers'
+    icon: ArchiveIcon,
+    title: 'Nguyên vật liệu'
   },
   // {
   //   href: '/products',
@@ -49,8 +50,8 @@ const items = [
   // },
   {
     href: '/patient',
-    icon: UserIcon,
-    title: 'Patient ID'
+    icon: EditIcon,
+    title: 'Nhập liệu'
   },
   {
     href: '/settings',
@@ -75,14 +76,9 @@ const items = [
 ];
 
 const itemsNotAdmin = [
-  // {
-  //   href: '/dashboard',
-  //   icon: BarChartIcon,
-  //   title: 'Dashboard'
-  // },
   {
     href: '/patient',
-    icon: UserIcon,
+    icon: EditIcon,
     title: 'Patient ID'
   }
 ];
@@ -121,7 +117,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      <Box
+      {/* <Box
         alignItems="center"
         display="flex"
         flexDirection="column"
@@ -146,8 +142,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         >
           {userData.positionName}
         </Typography>
-      </Box>
-      <Divider />
+      </Box> */}
+      {/* <Divider /> */}
       <Box p={2}>
         <List>
           {userData.roleId === 1 
