@@ -84,8 +84,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         holiday: 0,
         otherDay: 0,
         isOverTime: false,
-        over8HoursDay: 0,
-        date: ''
+        over8HoursDay: 0
       });
       setEmployeeName(null);
   }
@@ -104,6 +103,7 @@ const SalaryDetails = ({ className, ...rest }) => {
 
   const handleSubmit = () => {
     let totalMoney = 0;
+    const today = moment().format('YYYY-MM-DD');
     if (values.isOverTime) {
         if(values.isOtherDay) {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
@@ -133,7 +133,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         otherDay: values.otherDay,
         isOverTime: values.isOverTime,
         over8HoursDay: values.over8HoursDay,
-        date: values.date,
+        date: today,
         totalMoney: totalMoney
     }
 
@@ -142,60 +142,58 @@ const SalaryDetails = ({ className, ...rest }) => {
 
   const handleGetPosition = (name) => {
     newEmployeeList.forEach((item) => {
-        if(name === item.name) {
-            if (item.value === 'pv') {
-                setValues({
-                    ...values,
-                    positionName: item.position,
-                    positionKey: item.value,
-                    salaryRangeNormal: 18,
-                    salaryRangeWeekend: 20
-                });
-            } else if (item.value === 'pc') {
-                setValues({
-                    ...values,
-                    positionName: item.position,
-                    positionKey: item.value,
-                    salaryRangeNormal: 19,
-                    salaryRangeWeekend: 22
-                });
-            } else if (item.value === 'tn') {
-                setValues({
-                    ...values,
-                    positionName: item.position,
-                    positionKey: item.value,
-                    salaryRangeNormal: 19,
-                    salaryRangeWeekend: 22
-                });
-            }
+      if(name === item.name) {
+        if (item.value === 'pv') {
+            setValues({
+                ...values,
+                positionName: item.position,
+                positionKey: item.value,
+                salaryRangeNormal: 18,
+                salaryRangeWeekend: 20
+            });
+        } else if (item.value === 'pc') {
+            setValues({
+                ...values,
+                positionName: item.position,
+                positionKey: item.value,
+                salaryRangeNormal: 19,
+                salaryRangeWeekend: 22
+            });
+        } else if (item.value === 'tn') {
+            setValues({
+                ...values,
+                positionName: item.position,
+                positionKey: item.value,
+                salaryRangeNormal: 19,
+                salaryRangeWeekend: 22
+            });
         }
+      }
     })
-  }
+  };
 
   useEffect(() => {
-    const today = moment().format('YYYY-MM-DD');
-    setValues({
-      ...values,
-      date: today,
-    });
     setNewEmployeeList(employeeList);
-    
   }, []);
 
-  // const handleRemoveItemInAutocomplete = () => {
-  //   const newArray = [];
-  //   employeeSalaryList.forEach((item1) => {
-  //     console.log(item1);
-  //     newEmployeeList.forEach((item2) => {
-  //       if(item1.positionName === item2.name) {
-  //         newArray = newEmployeeList.filter(function( obj ) {
-  //           return obj.field !== item1.positionName;
-  //         });
-  //         console.log(newArray);
-  //       }
-  //     });
-  //   });
-  // }
+  useEffect(() => {
+    if (employeeSalaryList.length !== 0) {
+      let newArray = [];
+      let index = 0;
+      employeeSalaryList.forEach((item1) => {
+        newEmployeeList.forEach((item2) => {
+          if(item1.employeeName === item2.name) {
+            newArray = newEmployeeList.filter(function( obj ) {
+              return obj.name !== item1.employeeName;
+            });
+            setNewEmployeeList(newArray);
+          }
+        });
+      });
+    }
+  }, [employeeSalaryList]);
+
+  
 
   return (
     <form

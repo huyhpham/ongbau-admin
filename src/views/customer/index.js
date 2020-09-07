@@ -9,9 +9,11 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import * as appActions from '../../../store/actions/app';
+import * as appActions from '../../store/actions/app';
+
 import Page from 'src/components/Page';
-import Results from './Results';
+import Results from './CustomerListView/Results';
+import EmployeeResults from './EmployeeListView/EmployeeResults';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +55,8 @@ const CustomerListView = () => {
   const classes = useStyles();
   const dispatch = useDispatch(),
     [customers, setCustomers] = useState([]),
-    customerList = useSelector(state => state.app.customerList);
+    customerList = useSelector(state => state.app.customerList),
+    employeeList = useSelector(state => state.app.employeeList);
   const [value, setValue] = React.useState(0);
   
   const onChangeCustomerList = value => {
@@ -89,7 +92,7 @@ const CustomerListView = () => {
           >
             <Tab label="Nguyên vật liệu" {...a11yProps(0)} />
             <Tab label="Thu chi" {...a11yProps(1)} />
-            {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
+            <Tab label="Nhân viên" {...a11yProps(2)} />
           </Tabs>
         </Paper>
         <TabPanel value={value} index={0}>
@@ -98,9 +101,9 @@ const CustomerListView = () => {
         <TabPanel value={value} index={1}>
           Item Two
         </TabPanel>
-        {/* <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel> */}
+        <TabPanel value={value} index={2}>
+          <EmployeeResults customers={employeeList}/>
+        </TabPanel>
       </Container>
     </Page>
   );

@@ -46,8 +46,6 @@ const useStyles = makeStyles((theme) => ({
 const TotalCustomers = ({ className, ...rest }) => {
   const classes = useStyles();
   const dispatch = useDispatch(),
-    // [currMonth, setCurrMonth] = useState(0),
-    // [lastMonth, setLastMonth] = useState(0),
     currMonth = useSelector(state => state.app.currMonthCustomer),
     lastMonth = useSelector(state => state.app.lastMonthCustomer),
     [increase, setIncrease] = useState(null),
@@ -90,8 +88,6 @@ const TotalCustomers = ({ className, ...rest }) => {
   }, []);
 
   useEffect(() => {
-    console.log(currMonth);
-    console.log(lastMonth);
     if (currMonth - lastMonth > 0) {
       setIncrease(true);
       setIncreasePercentage(Math.floor(((currMonth - lastMonth) / (currMonth + lastMonth)) * 100));

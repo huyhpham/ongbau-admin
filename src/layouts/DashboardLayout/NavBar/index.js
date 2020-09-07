@@ -14,23 +14,12 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
   Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
   Edit as EditIcon,
   Archive as ArchiveIcon
 } from 'react-feather';
 import NavItem from './NavItem';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
 
 const items = [
   {
@@ -41,7 +30,7 @@ const items = [
   {
     href: '/customers',
     icon: ArchiveIcon,
-    title: 'Nguyên vật liệu'
+    title: 'Thống kê'
   },
   // {
   //   href: '/products',
@@ -108,7 +97,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const content = (
@@ -117,33 +105,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      {/* <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
-        />
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
-          {userData.fullname}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {userData.positionName}
-        </Typography>
-      </Box> */}
-      {/* <Divider /> */}
       <Box p={2}>
         <List>
           {userData.roleId === 1 
