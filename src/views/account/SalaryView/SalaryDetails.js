@@ -28,8 +28,8 @@ const useStyles = makeStyles(() => ({
 
 const SalaryDetails = ({ className, ...rest }) => {
   const classes = useStyles(),
-    success = useSelector(state => state.error.success),
     employeeList = useSelector(state => state.app.employeeList),
+    employeeSalaryList = useSelector(state => state.app.employeeSalaryList),
     dispatch = useDispatch();
   const [values, setValues] = useState({
         positionName: '',
@@ -49,7 +49,8 @@ const SalaryDetails = ({ className, ...rest }) => {
     }),
     [open, setOpen] = useState(false),
     [employeeName, setEmployeeName] = useState(null),
-    [inputValue, setInputValue] = useState('');
+    [inputValue, setInputValue] = useState(''),
+    [newEmployeeList, setNewEmployeeList] = useState([]);
 
   const handleChange = (event) => {
     setValues({
@@ -73,8 +74,7 @@ const SalaryDetails = ({ className, ...rest }) => {
     });
   }
 
-  const handleApiResponse = (success) => {
-    if (success) {
+  const handleApiResponse = () => {
       setValues({
         ...values,
         positionName: '',
@@ -88,7 +88,6 @@ const SalaryDetails = ({ className, ...rest }) => {
         date: ''
       });
       setEmployeeName(null);
-    }
   }
   
   const handleClose = (event, reason) => {
@@ -138,14 +137,11 @@ const SalaryDetails = ({ className, ...rest }) => {
         totalMoney: totalMoney
     }
 
-    // dispatch(appActions.getNewItem(newItem));
-    // dispatch(appActions.addNewItem(newItem));
-
-    console.log(employee);
+    dispatch(appActions.getEmployeeSalaryList(employee));
   };
 
   const handleGetPosition = (name) => {
-    employeeList.forEach((item) => {
+    newEmployeeList.forEach((item) => {
         if(name === item.name) {
             if (item.value === 'pv') {
                 setValues({
@@ -177,24 +173,29 @@ const SalaryDetails = ({ className, ...rest }) => {
   }
 
   useEffect(() => {
-    const handleOpen = (success) => {
-      setOpen(success);
-    }
-  
-    if(success) {
-      handleApiResponse(success);
-      handleOpen(success);
-    }
-  }, [success]);
-
-  useEffect(() => {
     const today = moment().format('YYYY-MM-DD');
     setValues({
       ...values,
       date: today,
     });
+    setNewEmployeeList(employeeList);
     
   }, []);
+
+  // const handleRemoveItemInAutocomplete = () => {
+  //   const newArray = [];
+  //   employeeSalaryList.forEach((item1) => {
+  //     console.log(item1);
+  //     newEmployeeList.forEach((item2) => {
+  //       if(item1.positionName === item2.name) {
+  //         newArray = newEmployeeList.filter(function( obj ) {
+  //           return obj.field !== item1.positionName;
+  //         });
+  //         console.log(newArray);
+  //       }
+  //     });
+  //   });
+  // }
 
   return (
     <form
@@ -232,7 +233,7 @@ const SalaryDetails = ({ className, ...rest }) => {
               <Autocomplete
                 id="combo-box-demo"
                 value={employeeName}
-                options={employeeList.map((option) => option.name)}
+                options={newEmployeeList.map((option) => option.name)}
                 onChange={(event, value) => {setEmployeeName(value); handleGetPosition(value);}}
                 inputValue={inputValue}
                 onInputChange={(event, newInputValue) => {
@@ -458,7 +459,11 @@ const SalaryDetails = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => handleSubmit()}
+            onClick={() => {
+              handleSubmit();
+              handleApiResponse();
+              //handleRemoveItemInAutocomplete();
+            }}
           >
             Lưu
           </Button>

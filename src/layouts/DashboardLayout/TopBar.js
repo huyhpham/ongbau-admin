@@ -11,10 +11,12 @@ import {
   Toolbar,
   makeStyles
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import * as appActions from '../../store/actions/app';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
-//import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -31,11 +33,13 @@ const TopBar = ({
 }) => {
   const classes = useStyles();
   const [notifications] = useState([]);
-  const history = useHistory();
+  const history = useHistory(),
+    dispatch = useDispatch();
 
   const handleLogOut = async () => {
     await localStorage.clear();
     await history.push('/');
+    await dispatch(appActions.resetApp());
   }
 
   return (
@@ -45,9 +49,6 @@ const TopBar = ({
       {...rest}
     >
       <Toolbar>
-        {/* <RouterLink to="/">
-          <Logo />
-        </RouterLink> */}
         <Box flexGrow={1} />
         <Hidden mdDown>
           <IconButton color="inherit">

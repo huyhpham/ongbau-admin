@@ -26,6 +26,8 @@ export default (state = initialState, action) => {
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
 	case Actions.SaveEmployeeList:
 		return { ...state, employeeList: action.values };
+	case Actions.ResetApp:
+		return initialState;
 	default:
 		return state;
 	}

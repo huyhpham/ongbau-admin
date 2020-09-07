@@ -63,3 +63,7 @@ export function getEmployeeList(values) {
 export function saveEmployeeList(values) {
 	return { type: Actions.SaveEmployeeList, values }
 }
+
+export function resetApp() {
+	return { type: Actions.ResetApp };
+}

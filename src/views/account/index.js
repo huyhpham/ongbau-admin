@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -8,10 +8,13 @@ import {
   Paper,
   Box
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+
 import Page from 'src/components/Page';
 import Profile from './AccountView/Profile';
 import ProfileDetails from './AccountView/ProfileDetails';
 import SalaryDetails from './SalaryView/SalaryDetails';
+import SalaryResults from './SalaryView/SalaryResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +54,8 @@ function a11yProps(index) {
 
 const Account = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(0),
+    employeeSalaryList = useSelector(state => state.app.employeeSalaryList);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -95,33 +99,31 @@ const Account = () => {
                 md={6}
                 xs={12}
               >
-                {/* <ProfileDetails /> */}
-                <SalaryDetails />
+                <ProfileDetails />
               </Grid>
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-          <Grid
+            <Grid
               container
               spacing={3}
               mt={3}
             >
               <Grid
                 item
-                lg={5}
+                lg={8}
                 md={6}
                 xs={12}
               >
-                <Profile />
+                <SalaryResults customers={employeeSalaryList}/>
               </Grid>
               <Grid
                 item
-                lg={7}
+                lg={4}
                 md={6}
                 xs={12}
               >
-                {/* <SalaryDetails /> */}
-                <ProfileDetails />
+                <SalaryDetails />
               </Grid>
             </Grid>
           </TabPanel>

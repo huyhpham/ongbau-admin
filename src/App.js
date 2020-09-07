@@ -2,6 +2,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import React, { useEffect } from 'react';
 import { useRoutes, Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import * as appActions from './store/actions/app';
+
 import withTracker from "./withTracker";
 import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
@@ -10,12 +13,14 @@ import routes from 'src/routes';
 
 const App = () => {
   //const routing = useRoutes(routes);
-  const isAuthenticated = localStorage.getItem('isAuthenticated');
+  const isAuthenticated = localStorage.getItem('isAuthenticated'),
+    dispatch = useDispatch();
 
   useEffect(() => {
     const pathname = window.location.pathname;
     if (pathname === '/' || pathname === '/login') {
       localStorage.clear();
+      dispatch(appActions.resetApp());
     }
   }, []);
 
