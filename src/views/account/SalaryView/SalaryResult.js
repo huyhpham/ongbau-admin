@@ -18,7 +18,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SalaryResults = ({ className, customers, ...rest }) => {
-  const classes = useStyles();
+  const classes = useStyles(),
+    [month, setMonth] = useState(null),
+    [year, setYear] = useState(null);
+
+  useEffect(() => {
+    const date = new Date();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    setYear(year);
+    setMonth(month);
+  }, [])
 
   const updateCustomer = (updateData) => {
     console.log('Hello', updateData);
@@ -65,7 +75,7 @@ const SalaryResults = ({ className, customers, ...rest }) => {
         id: 8,
         title: "Tiền lương",
         field: "totalMoney",
-        render: row => <span><CurrencyFormat value={`${row["totalMoney"]}${'000'}`} displayType={'text'} thousandSeparator={true}/></span>
+        render: row => <span><CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/></span>
     }
   ];
 
@@ -94,6 +104,8 @@ const SalaryResults = ({ className, customers, ...rest }) => {
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
+          exportButton: true,
+          exportFileName: `Bảng lương tháng ${month}${'/'}${year}`,
         }}
       />
     </Card>

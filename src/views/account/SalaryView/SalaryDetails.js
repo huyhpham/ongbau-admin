@@ -134,7 +134,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         isOverTime: values.isOverTime,
         over8HoursDay: values.over8HoursDay,
         date: today,
-        totalMoney: totalMoney
+        totalMoney: totalMoney + '000'
     }
 
     dispatch(appActions.getEmployeeSalaryList(employee));
