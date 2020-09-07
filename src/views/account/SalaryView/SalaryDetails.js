@@ -84,7 +84,12 @@ const SalaryDetails = ({ className, ...rest }) => {
         holiday: 0,
         otherDay: 0,
         isOverTime: false,
-        over8HoursDay: 0
+        over8HoursDay: 0,
+        salaryRangeNormal: 0,
+        salaryRangeHoliday: 0,
+        salaryRangeWeekend: 0,
+        salaryRangeOtherDay: 0,
+        isOtherDay: false,
       });
       setEmployeeName(null);
   }
