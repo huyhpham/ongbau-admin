@@ -55,3 +55,7 @@ export function addNewItem(values) {
 export function getNewItem(values) {
 	return { type: Actions.GetNewItem, values }
 }
+
+export function getEmployeeSalaryList(values) {
+	return { type: Actions.GetEmployeeSalaryList, values }
+}

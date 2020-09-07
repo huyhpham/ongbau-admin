@@ -6,7 +6,8 @@ const initialState = {
 	customerList: [],
 	currMonthCustomer: 0,
 	lastMonthCustomer: 0,
-	newItem: {}
+	newItem: {},
+	employeeSalaryList: []
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +24,8 @@ export default (state = initialState, action) => {
 		 return { ...state, lastMonthCustomer: action.values };
 	case Actions.GetNewItem:
 		return { ...state, newItem: action.values };
+	case Actions.GetEmployeeSalaryList:
+		return { ...state, employeeSalaryList: action.values };
 	default:
 		return state;
 	}

@@ -9,6 +9,7 @@ export const GetCustomerList                    = '@APP:GET-CUSTOMER-LIST';
 export const GetCustomerListByMonth             = '@APP:GET-CUSTOMER-LIST-BY-MONTH';
 export const GetCurrMonthCustomer               = '@APP:GET-CURR-MONTH-CUSTOMER';
 export const GetLastMonthCustomer               = '@APP:GET-LAST-MONTH-CUSTOMER';
+export const GetEmployeeSalaryList              = '@APP:GET-EMPLOYEE-SALARY-LIST';
 export const SaveCustomerList                   = '@APP:SAVE-CUSTOMER-LIST';
 
 export const GetError                           = '@APP:GET-ERROR';

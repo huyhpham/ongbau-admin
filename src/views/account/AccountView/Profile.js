@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -12,7 +12,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as appActions from '../../../store/actions/app';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -23,8 +24,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Profile = ({ className, ...rest }) => {
-  const classes = useStyles();
+  const classes = useStyles(),
+    dispatch = useDispatch();
   const newItem = useSelector(state => state.app.newItem);
+  useEffect(() => {
+    dispatch(appActions.getNewItem({}));
+  }, []);
 
   return (
     <Card
@@ -97,31 +102,31 @@ const Profile = ({ className, ...rest }) => {
               gutterBottom
               variant="h4"
             >
-              {newItem.itemName}
+              {Object.keys(newItem).length === 0 ? 'No item to show.' : newItem.itemName}
             </Typography>
             <Typography
               color="textSecondary"
               variant="body1"
             >
-              {newItem.total}
+              {Object.keys(newItem).length === 0 ? '0' : newItem.total}
             </Typography>
             <Typography
               color="textSecondary"
               variant="body1"
             >
-              {newItem.importData}
+              {Object.keys(newItem).length === 0 ? '0' : newItem.importData}
             </Typography>
             <Typography
               color="textSecondary"
               variant="body1"
             >
-              {newItem.exportData}
+              {Object.keys(newItem).length === 0 ? '0' : newItem.exportData}
             </Typography>
             <Typography
               color="textSecondary"
               variant="body1"
             >
-              {newItem.usedData}
+              {Object.keys(newItem).length === 0 ? '0' : newItem.usedData}
             </Typography>
           </Box>
         </Box>

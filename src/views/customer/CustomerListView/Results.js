@@ -22,7 +22,6 @@ const Results = ({ className, customers, ...rest }) => {
   const updateCustomer = (updateData) => {
     console.log('Hello', updateData);
   }
-  const [filterValue, setFilterValue] = useState({});
 
   const itemsHeader = [
     {
@@ -66,12 +65,6 @@ const Results = ({ className, customers, ...rest }) => {
     },
     
   ];
-  
-  useEffect(() => {
-    customers.forEach((item) => {
-      console.log(item);
-    });
-  }, []);
 
   return (
     <Card
@@ -98,7 +91,7 @@ const Results = ({ className, customers, ...rest }) => {
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
-          filtering: true
+          //filtering: true
         }}
       />
     </Card>

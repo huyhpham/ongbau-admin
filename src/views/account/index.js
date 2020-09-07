@@ -9,8 +9,9 @@ import {
   Box
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Profile from './Profile';
-import ProfileDetails from './ProfileDetails';
+import Profile from './AccountView/Profile';
+import ProfileDetails from './AccountView/ProfileDetails';
+import SalaryDetails from './SalaryView/SalaryDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +62,7 @@ const Account = () => {
       className={classes.root}
       title="Patient"
     >
-      <Container maxWidth="false">
+      <Container maxWidth={false}>
         <Paper 
             square
           >
@@ -94,12 +95,35 @@ const Account = () => {
                 md={6}
                 xs={12}
               >
-                <ProfileDetails />
+                {/* <ProfileDetails /> */}
+                <SalaryDetails />
               </Grid>
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Item Two
+          <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={5}
+                md={6}
+                xs={12}
+              >
+                <Profile />
+              </Grid>
+              <Grid
+                item
+                lg={7}
+                md={6}
+                xs={12}
+              >
+                {/* <SalaryDetails /> */}
+                <ProfileDetails />
+              </Grid>
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
             Item Three

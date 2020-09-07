@@ -1,0 +1,480 @@
+import React, { useState, useEffect } from 'react';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import * as appActions from '../../../store/actions/app';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  TextField,
+  makeStyles,
+  Snackbar,
+  Typography,
+  FormControlLabel,
+  Checkbox
+} from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import moment from 'moment';
+
+const useStyles = makeStyles(() => ({
+  root: {}
+}));
+
+const SalaryDetails = ({ className, ...rest }) => {
+  const classes = useStyles(),
+    success = useSelector(state => state.error.success),
+    dispatch = useDispatch();
+  const [values, setValues] = useState({
+        positionName: '',
+        positionKey: '',
+        normalDay: 0,
+        weekendDay: 0,
+        holiday: 0,
+        otherDay: 0,
+        isOverTime: false,
+        over8HoursDay: 0,
+        date: '',
+        salaryRangeNormal: 0,
+        salaryRangeHoliday: 0,
+        salaryRangeWeekend: 0,
+        salaryRangeOtherDay: 0,
+        isOtherDay: false,
+    }),
+    [open, setOpen] = useState(false),
+    [employeeName, setEmployeeName] = useState(null),
+    [inputValue, setInputValue] = useState('');
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleChecked = () => {
+    setValues({
+        ...values,
+        over8HoursDay: 0,
+        isOverTime: !values.isOverTime
+      });
+  }
+
+  const handleCheckedOtherDay = () => {
+    setValues({
+        ...values,
+        isOtherDay: !values.isOtherDay
+    });
+  }
+
+  const handleApiResponse = (success) => {
+    if (success) {
+      setValues({
+        ...values,
+        positionName: '',
+        positionKey: '',
+        normalDay: 0,
+        weekendDay: 0,
+        holiday: 0,
+        otherDay: 0,
+        isOverTime: false,
+        over8HoursDay: 0,
+        date: ''
+      });
+      setEmployeeName(null);
+    }
+  }
+  
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch(appActions.getSuccess(false));
+    setOpen(false);
+  };
+
+  const Alert = (props) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  };
+
+  const handleSubmit = () => {
+    let totalMoney = 0;
+    if (values.isOverTime) {
+        if(values.isOtherDay) {
+            totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
+                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + 20 * values.over8HoursDay + values.otherDay * values.salaryRangeOtherDay);
+        } else {
+            totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
+                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + 20 * values.over8HoursDay);
+        }
+        
+    } else {
+        if(values.isOtherDay) {
+            totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
+                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + values.otherDay * values.salaryRangeOtherDay);
+        } else {
+            totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
+                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday);
+        }
+    }
+
+    const employee = {
+        employeeName: employeeName,
+        positionName: values.positionName,
+        positionKey: values.positionKey,
+        normalDay: values.normalDay,
+        weekendDay: values.weekendDay,
+        holiday: values.holiday,
+        otherDay: values.otherDay,
+        isOverTime: values.isOverTime,
+        over8HoursDay: values.over8HoursDay,
+        date: values.date,
+        totalMoney: totalMoney
+    }
+
+    // dispatch(appActions.getNewItem(newItem));
+    // dispatch(appActions.addNewItem(newItem));
+
+    console.log(employee);
+  };
+
+  const handleGetPosition = (name) => {
+    fakeData.forEach((item) => {
+        if(name === item.name) {
+            if (item.value === 'pv') {
+                setValues({
+                    ...values,
+                    positionName: item.position,
+                    positionKey: item.value,
+                    salaryRangeNormal: 18,
+                    salaryRangeWeekend: 20
+                });
+            } else if (item.value === 'pc') {
+                setValues({
+                    ...values,
+                    positionName: item.position,
+                    positionKey: item.value,
+                    salaryRangeNormal: 19,
+                    salaryRangeWeekend: 22
+                });
+            } else if (item.value === 'tn') {
+                setValues({
+                    ...values,
+                    positionName: item.position,
+                    positionKey: item.value,
+                    salaryRangeNormal: 19,
+                    salaryRangeWeekend: 22
+                });
+            }
+        }
+    })
+  }
+
+  useEffect(() => {
+    const handleOpen = (success) => {
+      setOpen(success);
+    }
+  
+    if(success) {
+      handleApiResponse(success);
+      handleOpen(success);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    const today = moment().format('YYYY-MM-DD');
+    setValues({
+      ...values,
+      date: today,
+    });
+  }, []);
+
+  return (
+    <form
+      autoComplete="off"
+      noValidate
+      className={clsx(classes.root, className)}
+      {...rest}
+    >
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          Update Successfully!
+        </Alert>
+      </Snackbar>
+      <Card>
+        <CardHeader
+          subheader="Nhớ kiểm tra nguyên vật liệu sau mỗi ngày bán hàng."
+          title="Bảng tính lương"
+        />
+        <Divider />
+        <CardContent>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <Autocomplete
+                id="combo-box-demo"
+                value={employeeName}
+                options={fakeData.map((option) => option.name)}
+                onChange={(event, value) => {setEmployeeName(value); handleGetPosition(value);}}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                renderInput={(params) => <TextField {...params} label="Tên nhân viên" variant="outlined" />}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                //helperText="Please specify the first name"
+                label="Chức vụ"
+                name="positionName"
+                onChange={handleChange}
+                required
+                value={values.positionName}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+                <Typography
+                    color="textPrimary"
+                    gutterBottom
+                    variant="h5"
+                >
+                    Số giờ làm việc: 
+                </Typography>
+            </Grid>
+            
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Số giờ làm trong tuần"
+                    name="normalDay"
+                    onChange={handleChange}
+                    required
+                    value={values.normalDay}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Mức lương bình thường"
+                    name="salaryRangeNormal"
+                    onChange={handleChange}
+                    required
+                    value={values.salaryRangeNormal}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Số giờ làm cuối tuần"
+                    name="weekendDay"
+                    onChange={handleChange}
+                    value={values.weekendDay}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Mức lương cuối tuần"
+                    name="salaryRangeWeekend"
+                    onChange={handleChange}
+                    required
+                    value={values.salaryRangeWeekend}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Số giờ làm ngày lễ"
+                    name="holiday"
+                    onChange={handleChange}
+                    value={values.holiday}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+                <TextField
+                    fullWidth
+                    label="Mức lương ngày lễ"
+                    name="salaryRangeHoliday"
+                    onChange={handleChange}
+                    value={values.salaryRangeHoliday}
+                    variant="outlined"
+                />
+            </Grid>
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+                <FormControlLabel
+                    control={
+                    <Checkbox
+                        checked={values.isOtherDay}
+                        onChange={handleCheckedOtherDay}
+                        name="isOtherDay"
+                        color="primary"
+                    />
+                    }
+                    label="Làm việc ngoài giờ"
+                />
+            </Grid>
+            {values.isOtherDay
+                ? <Grid
+                        container
+                        spacing={3}
+                    >
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Số giờ làm thêm"
+                                name="otherDay"
+                                onChange={handleChange}
+                                value={values.otherDay}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
+                            xs={12}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Mức lương làm thêm"
+                                name="salaryRangeOtherDay"
+                                onChange={handleChange}
+                                value={values.salaryRangeOtherDay}
+                                variant="outlined"
+                            />
+                        </Grid>
+                    </Grid>
+                : <Grid/>
+            }
+            <Grid
+              item
+              md={12}
+              xs={12}
+            >
+                <FormControlLabel
+                    control={
+                    <Checkbox
+                        checked={values.isOverTime}
+                        onChange={handleChecked}
+                        name="isOverTime"
+                        color="primary"
+                    />
+                    }
+                    label="Làm việc trên 8h"
+                />
+            </Grid>
+            { values.isOverTime
+                ? <Grid
+                    item
+                    md={6}
+                    xs={12}
+                >
+                    <TextField
+                        fullWidth
+                        helperText="Tiền ăn hỗ trợ mỗi nhân viên là 20k/ngày."
+                        label="Số ngày làm trên 8h"
+                        name="over8HoursDay"
+                        onChange={handleChange}
+                        //required
+                        value={values.over8HoursDay}
+                        variant="outlined"
+                    />
+                </Grid>
+                : <Grid/>
+            }
+          </Grid>
+        </CardContent>
+        <Divider />
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          p={2}
+        >
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => handleSubmit()}
+          >
+            Lưu
+          </Button>
+        </Box>
+      </Card>
+    </form>
+  );
+};
+
+const fakeData = [
+  { name: 'Nguyễn Văn A', position: 'Phục vụ', value: 'pv' },
+  { name: 'Nguyễn Văn B', position: 'Pha chế', value: 'pc' },
+  { name: 'Nguyễn Văn C', position: 'Phục vụ', value: 'pv' },
+  { name: 'Nguyễn Văn D', position: 'Thu ngân', value: 'tn' },
+];
+
+SalaryDetails.propTypes = {
+  className: PropTypes.string
+};
+
+export default SalaryDetails;
