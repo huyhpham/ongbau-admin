@@ -29,6 +29,7 @@ const useStyles = makeStyles(() => ({
 const SalaryDetails = ({ className, ...rest }) => {
   const classes = useStyles(),
     success = useSelector(state => state.error.success),
+    employeeList = useSelector(state => state.app.employeeList),
     dispatch = useDispatch();
   const [values, setValues] = useState({
         positionName: '',
@@ -144,7 +145,7 @@ const SalaryDetails = ({ className, ...rest }) => {
   };
 
   const handleGetPosition = (name) => {
-    fakeData.forEach((item) => {
+    employeeList.forEach((item) => {
         if(name === item.name) {
             if (item.value === 'pv') {
                 setValues({
@@ -192,6 +193,7 @@ const SalaryDetails = ({ className, ...rest }) => {
       ...values,
       date: today,
     });
+    
   }, []);
 
   return (
@@ -230,7 +232,7 @@ const SalaryDetails = ({ className, ...rest }) => {
               <Autocomplete
                 id="combo-box-demo"
                 value={employeeName}
-                options={fakeData.map((option) => option.name)}
+                options={employeeList.map((option) => option.name)}
                 onChange={(event, value) => {setEmployeeName(value); handleGetPosition(value);}}
                 inputValue={inputValue}
                 onInputChange={(event, newInputValue) => {
@@ -465,13 +467,6 @@ const SalaryDetails = ({ className, ...rest }) => {
     </form>
   );
 };
-
-const fakeData = [
-  { name: 'Nguyễn Văn A', position: 'Phục vụ', value: 'pv' },
-  { name: 'Nguyễn Văn B', position: 'Pha chế', value: 'pc' },
-  { name: 'Nguyễn Văn C', position: 'Phục vụ', value: 'pv' },
-  { name: 'Nguyễn Văn D', position: 'Thu ngân', value: 'tn' },
-];
 
 SalaryDetails.propTypes = {
   className: PropTypes.string

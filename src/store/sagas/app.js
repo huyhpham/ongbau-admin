@@ -37,6 +37,13 @@ function getCustomerListByMonth(values) {
     });
 }
 
+function getEmployeeList() {
+    const token = localStorage.getItem('silverBullet');
+    return axios.get(`${api.live}/employee/`, 
+        { headers: { Authorization: token } }
+    );
+}
+
 function addNewItem(values) {
     return axios.post(`${api.live}/item/create-item`, values);
 }
@@ -131,6 +138,17 @@ export function* addNewItemSaga(action) {
     }
 }
 
+export function* getEmployeeListSaga() {
+    try {
+        const response = yield call(getEmployeeList);
+        if(response.status === 200) {
+            yield put(appActions.saveEmployeeList(response.data));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export default function* userSagas() {
     yield all([
        takeEvery(actions.Login, loginSaga),
@@ -139,5 +157,6 @@ export default function* userSagas() {
        takeEvery(actions.UpdateUserPassword, updateUserPasswordSaga),
        takeEvery(actions.GetCustomerListByMonth, getCustomerListByMonthSaga),
        takeEvery(actions.AddNewItem, addNewItemSaga),
+       takeEvery(actions.GetEmployeeList, getEmployeeListSaga),
     ]);
 }

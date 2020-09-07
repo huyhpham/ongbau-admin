@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Grid,
   makeStyles
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import * as appActions from '../../../store/actions/app';
 import Page from 'src/components/Page';
 import Budget from './Budget';
 import LatestOrders from './LatestOrders';
@@ -25,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(appActions.getEmployeeList());
+  }, []);
 
   return (
     <Page

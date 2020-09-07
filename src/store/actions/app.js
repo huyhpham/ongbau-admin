@@ -1,9 +1,5 @@
 import * as Actions from '../actions';
 
-export function increaseCounter(volume = 1) {
-	return { type: Actions.IncreaseCounter, volume };
-}
-
 export function getUser(user) {
 	return { type: Actions.GetUser, user };
 }
@@ -58,4 +54,12 @@ export function getNewItem(values) {
 
 export function getEmployeeSalaryList(values) {
 	return { type: Actions.GetEmployeeSalaryList, values }
+}
+
+export function getEmployeeList(values) {
+	return { type: Actions.GetEmployeeList, values }
+}
+
+export function saveEmployeeList(values) {
+	return { type: Actions.SaveEmployeeList, values }
 }
