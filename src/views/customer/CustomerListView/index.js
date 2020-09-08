@@ -9,13 +9,13 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import * as appActions from '../../store/actions/app';
+import * as appActions from '../../../store/actions/app';
 import _ from 'lodash'; 
-import { groups, groupBy } from '../../utils/groupBy';
+import { groups, groupBy } from '../../../utils/groupBy';
 
 import Page from 'src/components/Page';
-import Results from './CustomerListView/Results';
-import EmployeeResults from './EmployeeListView/EmployeeResults';
+import Results from './Results';
+import EmployeeResults from '../EmployeeListView/EmployeeResults';
 
 const useStyles = makeStyles((theme) => ({
   root: {
