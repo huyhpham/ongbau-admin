@@ -47,19 +47,19 @@ const SalaryResults = ({ className, customers, ...rest }) => {
         title="Bảng lương nhân viên"
         columns={itemsHeader}
         data={customers}
-        editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const dataUpdate = [...customers];
-                  const index = oldData.tableData.id;
-                  dataUpdate[index] = newData;
-                  updateCustomer(dataUpdate[index]);
+        // editable={{
+        //   onRowUpdate: (newData, oldData) =>
+        //     new Promise((resolve, reject) => {
+        //         setTimeout(() => {
+        //           const dataUpdate = [...customers];
+        //           const index = oldData.tableData.id;
+        //           dataUpdate[index] = newData;
+        //           updateCustomer(dataUpdate[index]);
 
-                  resolve();
-                }, 1000);
-            }),
-        }}
+        //           resolve();
+        //         }, 1000);
+        //     }),
+        // }}
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
@@ -67,14 +67,6 @@ const SalaryResults = ({ className, customers, ...rest }) => {
           exportFileName: `Bảng lương tháng ${month}${'/'}${year}`,
         }}
         actions={[
-          {
-            icon: 'save',
-            tooltip: 'Save',
-            isFreeAction: true,
-            onClick: () => {
-              console.log('Hello')
-            },
-          },
           {
             icon: 'delete',
             tooltip: 'Delete User',

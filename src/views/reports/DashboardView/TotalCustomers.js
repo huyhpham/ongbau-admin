@@ -72,20 +72,20 @@ const TotalCustomers = ({ className, ...rest }) => {
     return currMonthValue;
   }
 
-  const handleGetCurrCustomerListByMonth = async () => {
-    const currMonthValue = await getMonthYearValue(true);
-    dispatch(appActions.getCustomerListByMonth(currMonthValue, true));
-  }
+  // const handleGetCurrCustomerListByMonth = async () => {
+  //   const currMonthValue = await getMonthYearValue(true);
+  //   dispatch(appActions.getCustomerListByMonth(currMonthValue, true));
+  // }
 
-  const handleGetLastCustomerListByMonth = async () => {
-    const lastMonthValue = await getMonthYearValue(false);
-    dispatch(appActions.getCustomerListByMonth(lastMonthValue, false));
-  }
+  // const handleGetLastCustomerListByMonth = async () => {
+  //   const lastMonthValue = await getMonthYearValue(false);
+  //   dispatch(appActions.getCustomerListByMonth(lastMonthValue, false));
+  // }
 
-  useEffect(() => {
-    handleGetCurrCustomerListByMonth();
-    handleGetLastCustomerListByMonth();
-  }, []);
+  // useEffect(() => {
+  //   handleGetCurrCustomerListByMonth();
+  //   handleGetLastCustomerListByMonth();
+  // }, []);
 
   useEffect(() => {
     if (currMonth - lastMonth > 0) {
