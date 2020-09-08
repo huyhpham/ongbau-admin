@@ -50,14 +50,15 @@ function addNewItem(values) {
 
 function updateSalaryToApi(values) {
     const token = localStorage.getItem('silverBullet');
-    return axios.post(`${api.live}/setting/create`, values,
+    return axios.patch(`${api.live}/setting/update-salary`, values,
         { headers: { Authorization: token } }
     );
 }
 
-function getSalaryList(values) {
+function getSalaryListFromApi(values) {
+    console.log(values);
     const token = localStorage.getItem('silverBullet');
-    return axios.get(`${api.live}/setting/category-salary`, values,
+    return axios.post(`${api.live}/setting/category-salary`, values,
         { headers: { Authorization: token } }
     );
 }
@@ -166,8 +167,10 @@ export function* getEmployeeListSaga() {
 }
 
 export function* getSalaryListSaga(action) {
+    console.log(action);
     try {
-        const response = yield call(getSalaryList, action.values);
+        const response = yield call(getSalaryListFromApi, action.values);
+        console.log(response);
         if(response.status === 200) {
             yield put(appActions.saveSalaryList(response.data));
         }

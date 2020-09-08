@@ -31,6 +31,7 @@ const SalaryDetails = ({ className, ...rest }) => {
   const classes = useStyles(),
     employeeList = useSelector(state => state.app.employeeList),
     employeeSalaryList = useSelector(state => state.app.employeeSalaryList),
+    salaryList = useSelector(state => state.app.salaryList),
     dispatch = useDispatch();
   const [values, setValues] = useState({
         positionName: '',
@@ -148,34 +149,36 @@ const SalaryDetails = ({ className, ...rest }) => {
   };
 
   const handleGetPosition = (name) => {
-    newEmployeeList.forEach((item) => {
-      if(name === item.name) {
-        if (item.value === 'pv') {
-            setValues({
-                ...values,
-                positionName: item.position,
-                positionKey: item.value,
-                salaryRangeNormal: 18,
-                salaryRangeWeekend: 20
-            });
-        } else if (item.value === 'pc') {
-            setValues({
-                ...values,
-                positionName: item.position,
-                positionKey: item.value,
-                salaryRangeNormal: 19,
-                salaryRangeWeekend: 22
-            });
-        } else if (item.value === 'tn') {
-            setValues({
-                ...values,
-                positionName: item.position,
-                positionKey: item.value,
-                salaryRangeNormal: 19,
-                salaryRangeWeekend: 22
-            });
+    newEmployeeList.forEach((item1) => {
+      salaryList.forEach((item2) => {
+        if(name === item1.name) {
+          if (item1.value === item2.settingPositionKey) {
+              setValues({
+                  ...values,
+                  positionName: item1.position,
+                  positionKey: item1.value,
+                  salaryRangeNormal: item2.settingValue.salaryRangeNormalDay,
+                  salaryRangeWeekend: item2.settingValue.salaryRangeWeekendDay
+              });
+          } else if (item1.value === item2.settingPositionKey) {
+              setValues({
+                  ...values,
+                  positionName: item1.position,
+                  positionKey: item1.value,
+                  salaryRangeNormal: item2.settingValue.salaryRangeNormalDay,
+                  salaryRangeWeekend: item2.settingValue.salaryRangeWeekendDay
+              });
+          } else if (item1.value === item2.settingPositionKey) {
+              setValues({
+                  ...values,
+                  positionName: item1.position,
+                  positionKey: item1.value,
+                  salaryRangeNormal: item2.settingValue.salaryRangeNormalDay,
+                  salaryRangeWeekend: item2.settingValue.salaryRangeWeekendDay
+              });
+          }
         }
-      }
+      })
     })
   };
 

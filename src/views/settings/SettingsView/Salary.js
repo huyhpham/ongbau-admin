@@ -25,17 +25,33 @@ const Salary = ({ className, ...rest }) => {
     const classes = useStyles(),
     dispatch = useDispatch(),
     success = useSelector(state => state.error.success),
+    salaryList = useSelector(state => state.app.salaryList),
     [isError, setIsError] = useState(false),
     [errorMessage, setErrorMessage] = useState(''),
     [values, setValues] = useState({
         salaryRangeNormal: 0,
-        salaryRangeHoliday: 0,
         salaryRangeWeekend: 0,
     }),
     [open, setOpen] = useState(false),
     [employeeName, setEmployeeName] = useState(null),
     [inputValue, setInputValue] = useState(''),
-    [positionKey, setPositionKey] = useState('');
+    [positionKey, setPositionKey] = useState(''),
+    [settingId, setSettingId] = useState('');
+
+    useEffect(() => {
+        const handleOpen = (success) => {
+            setOpen(success);
+        }
+
+        if(success) {
+            handleApiResponse(success);
+            handleOpen(success);
+        }
+    }, [success]);
+
+    useEffect(() => {
+
+    }, []);
 
     const handleChange = (event) => {
         setValues({
@@ -67,27 +83,22 @@ const Salary = ({ className, ...rest }) => {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     };
 
-    useEffect(() => {
-        const handleOpen = (success) => {
-            setOpen(success);
-        }
-
-        if(success) {
-            handleApiResponse(success);
-            handleOpen(success);
-        }
-    }, [success]);
-
     const handleGetPosition = (name) => {
-        positionList.forEach((item) => {
-            if(name === item.name) {
-                setPositionKey(item.specificKey);
-            }
+        positionList.forEach((item1) => {
+            salaryList.forEach((item2) => {
+                if(name === item1.name) {
+                    setPositionKey(item1.specificKey);
+                }
+                if(name === item2.settingPosition) {
+                    setSettingId(item2._id);
+                }
+            })
         });
     };
 
     const handleUpdate = () => {
         const salarySetting = {
+            settingId: settingId,
             settingName: "Salary",
             settingCategory: "salary",
             settingSpecificName: "",

@@ -30,8 +30,11 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const salary = {
+      settingCategory: "salary"
+    }
     dispatch(appActions.getEmployeeList());
-    dispatch(appActions.getSalaryList());
+    dispatch(appActions.getSalaryList(salary));
   }, []);
 
   return (
