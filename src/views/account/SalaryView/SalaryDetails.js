@@ -146,6 +146,7 @@ const SalaryDetails = ({ className, ...rest }) => {
     }
 
     dispatch(appActions.getEmployeeSalaryList(employee));
+    dispatch(appActions.addEmployeeSalary(employee));
   };
 
   const handleGetPosition = (name) => {

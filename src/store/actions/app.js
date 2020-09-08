@@ -48,6 +48,10 @@ export function addNewItem(values) {
 	return { type: Actions.AddNewItem, values }
 }
 
+export function addEmployeeSalary(values) {
+	return { type: Actions.AddEmployeeSalary, values }
+}
+
 export function getNewItem(values) {
 	return { type: Actions.GetNewItem, values }
 }

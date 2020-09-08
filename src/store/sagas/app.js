@@ -48,6 +48,10 @@ function addNewItem(values) {
     return axios.post(`${api.live}/item/create-item`, values);
 }
 
+function addEmployeeSalary(values) {
+    return axios.post(`${api.live}/salary/create-salary`, values);
+}
+
 function updateSalaryToApi(values) {
     const token = localStorage.getItem('silverBullet');
     return axios.patch(`${api.live}/setting/update-salary`, values,
@@ -155,6 +159,19 @@ export function* addNewItemSaga(action) {
     }
 }
 
+export function* addEmployeeSalarySaga(action) {
+    try {
+        const response = yield call(addEmployeeSalary, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
 export function* getEmployeeListSaga() {
     try {
         const response = yield call(getEmployeeList);
@@ -204,5 +221,6 @@ export default function* userSagas() {
        takeEvery(actions.GetEmployeeList, getEmployeeListSaga),
        takeEvery(actions.UpdateSalary, updateSalarySaga),
        takeEvery(actions.GetSalaryList, getSalaryListSaga),
+       takeEvery(actions.AddEmployeeSalary, addEmployeeSalarySaga),
     ]);
 }
