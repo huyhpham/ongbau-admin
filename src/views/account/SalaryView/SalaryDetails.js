@@ -189,23 +189,25 @@ const SalaryDetails = ({ className, ...rest }) => {
 
   useEffect(() => {
     if (employeeSalaryList.length !== 0) {
-      let newArray = [];
-      employeeSalaryList.forEach((item1) => {
-        newEmployeeList.forEach((item2) => {
-          if(item1.employeeName === item2.name) {
-            newArray = newEmployeeList.filter(function( obj ) {
-              return obj.name !== item1.employeeName;
-            });
-            setNewEmployeeList(newArray);
-          }
-        });
-      });
+      // let newArray = [];
+      // employeeSalaryList.forEach((item1) => {
+      //   newEmployeeList.forEach((item2) => {
+      //     if(item1.employeeName === item2.name) {
+      //       newArray = newEmployeeList.filter(function( obj ) {
+      //         return obj.name !== item1.employeeName;
+      //       });
+      //       setNewEmployeeList(newArray);
+      //     }
+      //   });
+      // });
 
       let total = 0;
       employeeSalaryList.forEach((item) => {
         total += Number(item.totalMoney);
       });
       setTotal(total);
+    } else {
+      setTotal(0);
     }
   }, [employeeSalaryList]);
 

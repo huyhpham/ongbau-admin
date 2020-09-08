@@ -23,5 +23,8 @@ export const GetSuccess                         = '@APP:GET-SUCCESS';
 
 export const AddNewItem                         = '@APP:ADD-NEW-ITEM';
 export const AddEmployeeSalary                  = '@APP:ADD-EMPLOYEE-SALARY';
+export const AddNewEmployeeList                 = '@APP:ADD-NEW-EMPLOYEE-LIST';
 
 export const ResetApp                           = '@APP:RESET-APP';
+
+export const RemoveEmployeeSalary               = '@APP:REMOVE-APP';

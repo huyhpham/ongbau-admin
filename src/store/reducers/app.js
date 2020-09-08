@@ -25,6 +25,8 @@ export default (state = initialState, action) => {
 		return { ...state, newItem: action.values };
 	case Actions.GetEmployeeSalaryList:
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
+	case Actions.AddNewEmployeeList:
+		return { ...state, employeeSalaryList: action.values }
 	case Actions.SaveEmployeeList:
 		return { ...state, employeeList: action.values };
 	case Actions.SaveSalaryList:

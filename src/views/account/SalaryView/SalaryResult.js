@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import * as appActions from '../../../store/actions/app';
 import CurrencyFormat from 'react-currency-format';
 
 import {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SalaryResults = ({ className, customers, ...rest }) => {
   const classes = useStyles(),
+    dispatch = useDispatch(),
     [month, setMonth] = useState(null),
     [year, setYear] = useState(null);
 
@@ -70,8 +73,26 @@ const SalaryResults = ({ className, customers, ...rest }) => {
             isFreeAction: true,
             onClick: () => {
               console.log('Hello')
-            }
+            },
           },
+          {
+            icon: 'delete',
+            tooltip: 'Delete User',
+            onClick: (event, rowData) => {
+              let tempArray = [];
+              tempArray = customers.filter(function( obj ) {
+                return obj.employeeName !== rowData.employeeName;
+              });
+              const removeData = {
+                employeeName: rowData.employeeName,
+                positionName: rowData.positionName,
+                date: rowData.date,
+              }
+
+              dispatch(appActions.addNewEmployeeList(tempArray));
+              dispatch(appActions.removeEmployeeSalary(removeData));
+            }
+          }
         ]}
       />
     </Card>

@@ -83,3 +83,11 @@ export function resetApp() {
 export function updateSalary(values) {
 	return { type: Actions.UpdateSalary, values }
 }
+
+export function addNewEmployeeList(values) {
+	return { type: Actions.AddNewEmployeeList, values }
+}
+
+export function removeEmployeeSalary(values) {
+	return { type: Actions.RemoveEmployeeSalary, values }
+}
