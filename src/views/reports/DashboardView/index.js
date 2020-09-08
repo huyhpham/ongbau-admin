@@ -31,6 +31,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(appActions.getEmployeeList());
+    dispatch(appActions.getSalaryList());
   }, []);
 
   return (

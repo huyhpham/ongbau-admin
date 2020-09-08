@@ -7,7 +7,8 @@ const initialState = {
 	lastMonthCustomer: 0,
 	newItem: {},
 	employeeSalaryList: [],
-	employeeList: []
+	employeeList: [],
+	salaryList: [],
 };
 
 export default (state = initialState, action) => {
@@ -26,6 +27,8 @@ export default (state = initialState, action) => {
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
 	case Actions.SaveEmployeeList:
 		return { ...state, employeeList: action.values };
+	case Actions.SaveSalaryList:
+		return { ...state, salaryList: action.values };
 	case Actions.ResetApp:
 		return initialState;
 	default:

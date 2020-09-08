@@ -21,6 +21,7 @@ import {
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import moment from 'moment';
+import CurrencyFormat from 'react-currency-format';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -50,7 +51,8 @@ const SalaryDetails = ({ className, ...rest }) => {
     [open, setOpen] = useState(false),
     [employeeName, setEmployeeName] = useState(null),
     [inputValue, setInputValue] = useState(''),
-    [newEmployeeList, setNewEmployeeList] = useState([]);
+    [newEmployeeList, setNewEmployeeList] = useState([]),
+    [total, setTotal] = useState(0);
 
   const handleChange = (event) => {
     setValues({
@@ -184,7 +186,6 @@ const SalaryDetails = ({ className, ...rest }) => {
   useEffect(() => {
     if (employeeSalaryList.length !== 0) {
       let newArray = [];
-      let index = 0;
       employeeSalaryList.forEach((item1) => {
         newEmployeeList.forEach((item2) => {
           if(item1.employeeName === item2.name) {
@@ -195,6 +196,12 @@ const SalaryDetails = ({ className, ...rest }) => {
           }
         });
       });
+
+      let total = 0;
+      employeeSalaryList.forEach((item) => {
+        total += Number(item.totalMoney);
+      });
+      setTotal(total);
     }
   }, [employeeSalaryList]);
 
@@ -380,39 +387,39 @@ const SalaryDetails = ({ className, ...rest }) => {
                 />
             </Grid>
             {values.isOtherDay
-                ? <Grid
-                        container
-                        spacing={3}
-                    >
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Số giờ làm thêm"
-                                name="otherDay"
-                                onChange={handleChange}
-                                value={values.otherDay}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Mức lương làm thêm"
-                                name="salaryRangeOtherDay"
-                                onChange={handleChange}
-                                value={values.salaryRangeOtherDay}
-                                variant="outlined"
-                            />
-                        </Grid>
-                    </Grid>
+              ? <Grid
+                    container
+                    spacing={3}
+                  >
+                      <Grid
+                        item
+                        md={6}
+                        xs={12}
+                      >
+                          <TextField
+                            fullWidth
+                            label="Số giờ làm thêm"
+                            name="otherDay"
+                            onChange={handleChange}
+                            value={values.otherDay}
+                            variant="outlined"
+                          />
+                      </Grid>
+                      <Grid
+                        item
+                        md={6}
+                        xs={12}
+                      >
+                          <TextField
+                            fullWidth
+                            label="Mức lương làm thêm"
+                            name="salaryRangeOtherDay"
+                            onChange={handleChange}
+                            value={values.salaryRangeOtherDay}
+                            variant="outlined"
+                          />
+                      </Grid>
+                  </Grid>
                 : <Grid/>
             }
             <Grid
@@ -470,6 +477,28 @@ const SalaryDetails = ({ className, ...rest }) => {
           >
             Lưu
           </Button>
+        </Box>
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="row"
+          p={2}
+        >
+          <Typography
+            color="textPrimary"
+            gutterBottom
+            variant="h4"
+          >
+            Tổng tiền lương: 
+          </Typography>
+          <Typography
+            color="textPrimary"
+            gutterBottom
+            variant="h4"
+            style={{ marginLeft: 5, color: 'red' }}
+          >
+            <CurrencyFormat value={`${total}`} displayType={'text'} thousandSeparator={true}/> 
+          </Typography>
         </Box>
       </Card>
     </form>

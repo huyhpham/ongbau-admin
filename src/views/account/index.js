@@ -80,7 +80,7 @@ const Account = () => {
             </Tabs>
           </Paper>
           <TabPanel value={value} index={0}>
-            <Grid
+            {/* <Grid
               container
               spacing={3}
               mt={3}
@@ -100,6 +100,28 @@ const Account = () => {
                 xs={12}
               >
                 <ProfileDetails />
+              </Grid>
+            </Grid> */}
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={8}
+                md={6}
+                xs={12}
+              >
+                <SalaryResults customers={employeeSalaryList}/>
+              </Grid>
+              <Grid
+                item
+                lg={4}
+                md={6}
+                xs={12}
+              >
+                <SalaryDetails />
               </Grid>
             </Grid>
           </TabPanel>

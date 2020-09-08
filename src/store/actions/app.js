@@ -60,10 +60,22 @@ export function getEmployeeList(values) {
 	return { type: Actions.GetEmployeeList, values }
 }
 
+export function getSalaryList(values) {
+	return { type: Actions.GetSalaryList, values }
+}
+
 export function saveEmployeeList(values) {
 	return { type: Actions.SaveEmployeeList, values }
 }
 
+export function saveSalaryList(values) {
+	return { type: Actions.SaveSalaryList, values }
+}
+
 export function resetApp() {
 	return { type: Actions.ResetApp };
+}
+
+export function updateSalary(values) {
+	return { type: Actions.UpdateSalary, values }
 }

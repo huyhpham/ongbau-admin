@@ -3,6 +3,7 @@ import * as actions from '../actions';
 import * as appActions from '../actions/app';
 import axios from 'axios';
 import { api } from '../../utils/configs';
+import { take } from 'lodash';
 
 function loginApi(authParams) {
     return axios.post(`${api.live}/auth/login`, authParams);
@@ -30,7 +31,6 @@ function updateUserPassword(values) {
 }
 
 function getCustomerListByMonth(values) {
-    console.log(values);
     const token = localStorage.getItem('silverBullet');
     return axios.post(`${api.live}/total-customer`, values, {
         headers: { Authorization: token }
@@ -46,6 +46,20 @@ function getEmployeeList() {
 
 function addNewItem(values) {
     return axios.post(`${api.live}/item/create-item`, values);
+}
+
+function updateSalaryToApi(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.post(`${api.live}/setting/create`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
+function getSalaryList(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.get(`${api.live}/setting/category-salary`, values,
+        { headers: { Authorization: token } }
+    );
 }
 
 export function* loginSaga(action) {
@@ -131,10 +145,12 @@ export function* addNewItemSaga(action) {
     try {
         const response = yield call(addNewItem, action.values);
         if (response.status === 200) {
-            console.log(response);
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
         }
     } catch (err) {
-        console.log(err);
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
     }
 }
 
@@ -149,6 +165,31 @@ export function* getEmployeeListSaga() {
     }
 }
 
+export function* getSalaryListSaga(action) {
+    try {
+        const response = yield call(getSalaryList, action.values);
+        if(response.status === 200) {
+            yield put(appActions.saveSalaryList(response.data));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export function* updateSalarySaga(action) {
+    try {
+        const response = yield call(updateSalaryToApi, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        console.log(err);
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
 export default function* userSagas() {
     yield all([
        takeEvery(actions.Login, loginSaga),
@@ -158,5 +199,7 @@ export default function* userSagas() {
        takeEvery(actions.GetCustomerListByMonth, getCustomerListByMonthSaga),
        takeEvery(actions.AddNewItem, addNewItemSaga),
        takeEvery(actions.GetEmployeeList, getEmployeeListSaga),
+       takeEvery(actions.UpdateSalary, updateSalarySaga),
+       takeEvery(actions.GetSalaryList, getSalaryListSaga),
     ]);
 }

@@ -28,56 +28,12 @@ const SalaryResults = ({ className, customers, ...rest }) => {
     const year = date.getFullYear();
     setYear(year);
     setMonth(month);
-  }, [])
+    
+  }, []);
 
   const updateCustomer = (updateData) => {
     console.log('Hello', updateData);
   }
-
-  const itemsHeader = [
-    {
-        id: 7,
-        title: "Ngày tính lương",
-        field: "date",
-        render: row => <span>{  moment(row["date"]).format('DD/MM/YYYY') }</span>
-    },
-    {
-        id: 1,
-        title: "Nhân viên",
-        field: "employeeName",
-    },
-    {
-      id: 2,
-      title: "Chức vụ",
-      field: "positionName",
-    },
-    {
-        id: 3,
-        title: "Số giờ làm trong tuần",
-        field: "normalDay"
-    },
-    {
-        id: 4,
-        title: "Số giờ làm cuối tuần",
-        field: "weekendDay"
-    },
-    {
-        id: 5,
-        title: "Số giờ làm ngày lễ",
-        field: "holiday",
-    },
-    {
-        id: 6,
-        title: "Số giờ làm ngoài giờ",
-        field: "otherDay"
-    },
-    {
-        id: 8,
-        title: "Tiền lương",
-        field: "totalMoney",
-        render: row => <span><CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/></span>
-    }
-  ];
 
   return (
     <Card
@@ -107,10 +63,65 @@ const SalaryResults = ({ className, customers, ...rest }) => {
           exportButton: true,
           exportFileName: `Bảng lương tháng ${month}${'/'}${year}`,
         }}
+        actions={[
+          {
+            icon: 'save',
+            tooltip: 'Save',
+            isFreeAction: true,
+            onClick: () => {
+              console.log('Hello')
+            }
+          },
+        ]}
       />
     </Card>
   );
 };
+
+const itemsHeader = [
+  {
+      id: 7,
+      title: "Ngày tính lương",
+      field: "date",
+      render: row => <span>{  moment(row["date"]).format('DD/MM/YYYY') }</span>
+  },
+  {
+      id: 1,
+      title: "Nhân viên",
+      field: "employeeName",
+  },
+  {
+    id: 2,
+    title: "Chức vụ",
+    field: "positionName",
+  },
+  {
+      id: 3,
+      title: "Số giờ làm trong tuần",
+      field: "normalDay"
+  },
+  {
+      id: 4,
+      title: "Số giờ làm cuối tuần",
+      field: "weekendDay"
+  },
+  {
+      id: 5,
+      title: "Số giờ làm ngày lễ",
+      field: "holiday",
+  },
+  {
+      id: 6,
+      title: "Số giờ làm ngoài giờ",
+      field: "otherDay"
+  },
+  {
+      id: 8,
+      title: "Tiền lương",
+      field: "totalMoney",
+      render: row => <span><CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/></span>
+  }
+];
 
 SalaryResults.propTypes = {
   className: PropTypes.string,
