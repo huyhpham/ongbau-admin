@@ -71,7 +71,6 @@ const CustomerListView = () => {
       month: i,
       data: tempArray[i]
     }));
-    console.log(groupBy(customerList));
   }, []);
 
   return (

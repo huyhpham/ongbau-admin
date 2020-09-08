@@ -104,7 +104,6 @@ const ProfileDetails = ({ className, ...rest }) => {
 
   useEffect(() => {
     const today = moment().format('YYYY-MM-DD');
-    console.log(today);
     setValues({
       ...values,
       date: today,
