@@ -32,7 +32,8 @@ const Dashboard = () => {
   useEffect(() => {
     const salary = {
       settingCategory: "salary"
-    }
+    };
+    dispatch(appActions.getCustomerList());
     dispatch(appActions.getEmployeeList());
     dispatch(appActions.getSalaryList(salary));
   }, []);

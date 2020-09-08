@@ -60,7 +60,6 @@ function updateSalaryToApi(values) {
 }
 
 function getSalaryListFromApi(values) {
-    console.log(values);
     const token = localStorage.getItem('silverBullet');
     return axios.post(`${api.live}/setting/category-salary`, values,
         { headers: { Authorization: token } }
@@ -187,7 +186,6 @@ export function* getSalaryListSaga(action) {
     console.log(action);
     try {
         const response = yield call(getSalaryListFromApi, action.values);
-        console.log(response);
         if(response.status === 200) {
             yield put(appActions.saveSalaryList(response.data));
         }

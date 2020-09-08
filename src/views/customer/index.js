@@ -10,6 +10,8 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import * as appActions from '../../store/actions/app';
+import _ from 'lodash'; 
+import { groups, groupBy } from '../../utils/groupBy';
 
 import Page from 'src/components/Page';
 import Results from './CustomerListView/Results';
@@ -54,28 +56,23 @@ function a11yProps(index) {
 const CustomerListView = () => {
   const classes = useStyles();
   const dispatch = useDispatch(),
-    [customers, setCustomers] = useState([]),
     customerList = useSelector(state => state.app.customerList),
     employeeList = useSelector(state => state.app.employeeList);
   const [value, setValue] = React.useState(0);
-  
-  const onChangeCustomerList = value => {
-    setCustomers(value);
-  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    dispatch(appActions.getCustomerList());
+    const newArray = [];
+    const tempArray = _.groupBy(customerList, groups['byMonth']);
+    Object.keys(tempArray).map(i => newArray.push({
+      month: i,
+      data: tempArray[i]
+    }));
+    console.log(groupBy(customerList));
   }, []);
-
-  useEffect(() => {
-    if(customerList) {
-      onChangeCustomerList(customerList);
-    }
-  }, [customerList]);
 
   return (
     <Page
@@ -96,7 +93,7 @@ const CustomerListView = () => {
           </Tabs>
         </Paper>
         <TabPanel value={value} index={0}>
-          <Results customers={customers} />
+          <Results customers={customerList} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two
