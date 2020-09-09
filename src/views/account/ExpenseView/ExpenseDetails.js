@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import moment from 'moment';
+import { getWeekOfMonth } from '../../../utils/groupBy';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -43,7 +44,8 @@ const ExpenseDetails = ({ className, ...rest }) => {
             otherFeeName: '',
             incomeFee: 0,
             month: 0,
-            year: 0
+            year: 0,
+            week: 0
         }),
         [open, setOpen] = useState(false);
 
@@ -54,7 +56,8 @@ const ExpenseDetails = ({ className, ...rest }) => {
         setValues({
             ...values,
             month: month,
-            year: year
+            year: year,
+            week: getWeekOfMonth(today)
         });
     }, []);
 
@@ -129,7 +132,8 @@ const ExpenseDetails = ({ className, ...rest }) => {
             totalInterestMoney: interestMoney + '000',
             date: today,
             month: values.month,
-            year: values.year
+            year: values.year,
+            week: values.week
         }
 
         console.log(expenseItem);
@@ -157,7 +161,7 @@ const ExpenseDetails = ({ className, ...rest }) => {
       <Card>
         <CardHeader
           subheader="Nhớ kiểm tra số liệu cẩn thận."
-          title={`Bảng tính thu chi tháng${' '}${values.month}${' - '}${values.year}`}
+          title={`Bảng tính thu chi tuần ${values.week} - tháng${' '}${values.month}${' - '}${values.year}`}
         />
         <Divider />
         <CardContent>

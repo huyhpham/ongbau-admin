@@ -14,6 +14,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import CurrencyFormat from 'react-currency-format';
 import * as appActions from '../../../store/actions/app';
+import { getWeekOfMonth } from '../../../utils/groupBy';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -27,10 +28,12 @@ const ExpenseResult = ({ className, ...rest }) => {
     const classes = useStyles(),
         dispatch = useDispatch();
     const expenseItem = useSelector(state => state.app.expenseItem),
-        [today, setToday] = useState('');
+        [today, setToday] = useState(''),
+        [week, setWeek] = useState('');
 
     useEffect(() => {
         const today = moment().format('YYYY-MM-DD');
+        setWeek(getWeekOfMonth(today));
         setToday(today);
         dispatch(appActions.getExpenseItem({}));
     }, []);
@@ -52,7 +55,7 @@ const ExpenseResult = ({ className, ...rest }) => {
             gutterBottom
             variant="h4"
             >
-                Thu chi tháng:  
+                {`${'Thu chi tuần - '}${week}${' tháng:'}`}  
             </Typography>
             <Typography
                 color="textPrimary"
