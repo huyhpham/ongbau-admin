@@ -45,11 +45,7 @@ const ExpenseDetails = ({ className, ...rest }) => {
             month: 0,
             year: 0
         }),
-        [open, setOpen] = useState(false),
-        [employeeName, setEmployeeName] = useState(null),
-        [inputValue, setInputValue] = useState(''),
-        [newEmployeeList, setNewEmployeeList] = useState([]),
-        [total, setTotal] = useState(0);
+        [open, setOpen] = useState(false);
 
     useEffect(() => {
         const today = moment().format('YYYY-MM-DD');
@@ -89,7 +85,6 @@ const ExpenseDetails = ({ className, ...rest }) => {
             otherFeeName: '',
             incomeFee: 0,
         });
-        setEmployeeName(null);
     }
   
     const handleClose = (event, reason) => {
@@ -106,6 +101,17 @@ const ExpenseDetails = ({ className, ...rest }) => {
 
     const handleSubmit = () => {
         const today = moment().format('YYYY-MM-DD');
+        let interestMoney = 0;
+        let usedMoney = 0;
+        if(values.isOtherFee) {
+            usedMoney = parseFloat(values.itemFee) + parseFloat(values.placeFee) 
+                + parseFloat(values.electricFee) + parseFloat(values.waterFee) + parseFloat(values.internetFee) + parseFloat(values.otherFee);
+            interestMoney = parseFloat(values.incomeFee) - parseFloat(usedMoney);
+        } else {
+            usedMoney = parseFloat(values.itemFee) + parseFloat(values.placeFee) 
+                + parseFloat(values.electricFee) + parseFloat(values.waterFee) + parseFloat(values.internetFee);
+            interestMoney = parseFloat(values.incomeFee) - parseFloat(usedMoney);
+        }
         
         const expenseItem = {
             isOtherFee: values.isOtherFee + '000',
@@ -118,26 +124,18 @@ const ExpenseDetails = ({ className, ...rest }) => {
             otherFee: values.otherFee + '000',
             otherFeeName: values.otherFeeName,
             incomeFee: values.incomeFee + '000',
-            date: today
+            totalUsedMoney: usedMoney + '000',
+            totalIncomeMoney: values.incomeFee + '000',
+            totalInterestMoney: interestMoney + '000',
+            date: today,
+            month: values.month,
+            year: values.year
         }
 
         console.log(expenseItem);
         dispatch(appActions.getExpenseItem(expenseItem));
+        dispatch(appActions.addExpenseItem(expenseItem));
     };
-
-    useEffect(() => {
-        if (employeeSalaryList.length !== 0) {
-        let total = 0;
-        employeeSalaryList.forEach((item) => {
-            total += Number(item.totalMoney);
-        });
-        setTotal(total);
-        } else {
-        setTotal(0);
-        }
-    }, [employeeSalaryList]);
-
-  
 
   return (
     <form

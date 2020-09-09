@@ -4,9 +4,7 @@ import clsx from 'clsx';
 import moment from 'moment';
 import {
   Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
   Divider,
   Grid,
@@ -25,33 +23,17 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Profile = ({ className, ...rest }) => {
+const ExpenseResult = ({ className, ...rest }) => {
     const classes = useStyles(),
         dispatch = useDispatch();
     const expenseItem = useSelector(state => state.app.expenseItem),
-        [today, setToday] = useState(''),
-        [interestMoney, setInterestMoney] = useState(null);
+        [today, setToday] = useState('');
 
     useEffect(() => {
         const today = moment().format('YYYY-MM-DD');
         setToday(today);
         dispatch(appActions.getExpenseItem({}));
     }, []);
-
-    useEffect(() => {
-        if(Object.keys(expenseItem) !== 0) {
-            let interestMoney = 0;
-            if(expenseItem.isOtherFee) {
-                interestMoney = parseFloat(expenseItem.incomeFee) - (parseFloat(expenseItem.itemFee) + parseFloat(expenseItem.placeFee) 
-                    + parseFloat(expenseItem.electricFee) + parseFloat(expenseItem.waterFee) + parseFloat(expenseItem.internetFee) + parseFloat(expenseItem.otherFee));
-            } else {
-                interestMoney = parseFloat(expenseItem.incomeFee) - (parseFloat(expenseItem.itemFee) + parseFloat(expenseItem.placeFee) 
-                    + parseFloat(expenseItem.electricFee) + parseFloat(expenseItem.waterFee) + parseFloat(expenseItem.internetFee));
-            }
-            setInterestMoney(parseFloat(interestMoney));
-        }
-    }, [expenseItem]);
-    console.log(interestMoney);
 
   return (
     <Card
@@ -246,7 +228,7 @@ const Profile = ({ className, ...rest }) => {
                 variant="h4"
                 style={{ marginLeft: 10 }}
             >
-                {<CurrencyFormat value={`${interestMoney}`} displayType={'text'} thousandSeparator={true}/>}
+                {Object.keys(expenseItem).length === 0 ? '0' : <CurrencyFormat value={`${expenseItem.totalInterestMoney}`} displayType={'text'} thousandSeparator={true}/>}
             </Typography>
         </Box>
       </CardContent>
@@ -265,8 +247,8 @@ const Profile = ({ className, ...rest }) => {
   );
 };
 
-Profile.propTypes = {
+ExpenseResult.propTypes = {
   className: PropTypes.string
 };
 
-export default Profile;
+export default ExpenseResult;

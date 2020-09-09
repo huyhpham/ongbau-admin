@@ -73,6 +73,13 @@ function getSalaryListFromApi(values) {
     );
 }
 
+function addExpenseItem(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.post(`${api.live}/interest/create`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
 export function* loginSaga(action) {
     try {
         const history = action.payload.history,
@@ -178,6 +185,19 @@ export function* addEmployeeSalarySaga(action) {
     }
 }
 
+export function* addExpenseItemSaga(action) {
+    try {
+        const response = yield call(addExpenseItem, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
 export function* getEmployeeListSaga() {
     try {
         const response = yield call(getEmployeeList);
@@ -240,6 +260,7 @@ export default function* userSagas() {
        takeEvery(actions.UpdateSalary, updateSalarySaga),
        takeEvery(actions.GetSalaryList, getSalaryListSaga),
        takeEvery(actions.AddEmployeeSalary, addEmployeeSalarySaga),
-       takeEvery(actions.RemoveEmployeeSalary, removeEmployeeSalarySaga)
+       takeEvery(actions.RemoveEmployeeSalary, removeEmployeeSalarySaga),
+       takeEvery(actions.AddExpenseItem, addExpenseItemSaga),
     ]);
 }
