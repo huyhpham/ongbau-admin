@@ -91,3 +91,7 @@ export function addNewEmployeeList(values) {
 export function removeEmployeeSalary(values) {
 	return { type: Actions.RemoveEmployeeSalary, values }
 }
+
+export function getExpenseItem(values) {
+	return { type: Actions.GetExpenseItem, values }
+}

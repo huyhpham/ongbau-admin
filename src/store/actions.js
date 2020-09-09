@@ -13,6 +13,7 @@ export const GetEmployeeSalaryList              = '@APP:GET-EMPLOYEE-SALARY-LIST
 export const GetEmployeeList                    = '@APP:GET-EMPLOYEE-LIST';
 export const GetSalaryList                      = '@APP:GET-SALARY-LIST';
 export const GetNewItem                         = '@APP:GET-NEW-ITEM';
+export const GetExpenseItem                     = '@APP:ADD-EXPENSE-ITEM';
 
 export const SaveEmployeeList                   = '@APP:SAVE-EMPLOYEE-LIST';
 export const SaveCustomerList                   = '@APP:SAVE-CUSTOMER-LIST';
@@ -22,9 +23,9 @@ export const GetError                           = '@APP:GET-ERROR';
 export const GetSuccess                         = '@APP:GET-SUCCESS';
 
 export const AddNewItem                         = '@APP:ADD-NEW-ITEM';
+
 export const AddEmployeeSalary                  = '@APP:ADD-EMPLOYEE-SALARY';
 export const AddNewEmployeeList                 = '@APP:ADD-NEW-EMPLOYEE-LIST';
-
 export const ResetApp                           = '@APP:RESET-APP';
 
 export const RemoveEmployeeSalary               = '@APP:REMOVE-APP';

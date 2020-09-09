@@ -15,6 +15,8 @@ import Profile from './AccountView/Profile';
 import ProfileDetails from './AccountView/ProfileDetails';
 import SalaryDetails from './SalaryView/SalaryDetails';
 import SalaryResults from './SalaryView/SalaryResult';
+import ExpenseDetails from './ExpenseView/ExpenseDetails';
+import ExpenseResults from './ExpenseView/ExpenseResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,28 +104,6 @@ const Account = () => {
                 <ProfileDetails />
               </Grid>
             </Grid>
-            {/* <Grid
-              container
-              spacing={3}
-              mt={3}
-            >
-              <Grid
-                item
-                lg={8}
-                md={6}
-                xs={12}
-              >
-                <SalaryResults customers={employeeSalaryList}/>
-              </Grid>
-              <Grid
-                item
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <SalaryDetails />
-              </Grid>
-            </Grid> */}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Grid
@@ -150,7 +130,28 @@ const Account = () => {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Item Three
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={5}
+                md={6}
+                xs={12}
+              >
+                <ExpenseResults/>
+              </Grid>
+              <Grid
+                item
+                lg={7}
+                md={6}
+                xs={12}
+              >
+                <ExpenseDetails />
+              </Grid>
+            </Grid>
           </TabPanel>
       </Container>
     </Page>

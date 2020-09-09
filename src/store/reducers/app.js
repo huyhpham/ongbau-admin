@@ -6,6 +6,7 @@ const initialState = {
 	currMonthCustomer: 0,
 	lastMonthCustomer: 0,
 	newItem: {},
+	expenseItem: {},
 	employeeSalaryList: [],
 	employeeList: [],
 	salaryList: [],
@@ -23,6 +24,8 @@ export default (state = initialState, action) => {
 		 return { ...state, lastMonthCustomer: action.values };
 	case Actions.GetNewItem:
 		return { ...state, newItem: action.values };
+	case Actions.GetExpenseItem:
+		return { ...state, expenseItem: action.values };
 	case Actions.GetEmployeeSalaryList:
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
 	case Actions.AddNewEmployeeList:
