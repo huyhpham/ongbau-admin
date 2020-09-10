@@ -105,7 +105,7 @@ const SalaryDetails = ({ className, ...rest }) => {
  
         //read excel file
         readFile(file)
-        .then((readedData) => {setInitialData(readedData); console.log(readedData);})
+        .then((readedData) => {setInitialData(readedData);})
         .catch((error) => console.error(error));
     };
 
@@ -138,10 +138,10 @@ const SalaryDetails = ({ className, ...rest }) => {
 
     return (
         <form
-        autoComplete="off"
-        noValidate
-        className={clsx(classes.root, className)}
-        {...rest}
+            autoComplete="off"
+            noValidate
+            className={clsx(classes.root, className)}
+            {...rest}
         >
         <Snackbar
             open={open}
