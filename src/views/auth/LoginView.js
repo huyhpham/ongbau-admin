@@ -92,14 +92,14 @@ const LoginView = () => {
                     color="textPrimary"
                     variant="h2"
                   >
-                    Sign in
+                    Đăng nhập
                   </Typography>
                   <Typography
                     color="textSecondary"
                     gutterBottom
                     variant="body2"
                   >
-                    Sign in on the internal platform
+                    Đăng nhập vào trang admin Ông Bầu
                   </Typography>
                 </Box>
                 <TextField
@@ -133,7 +133,6 @@ const LoginView = () => {
                 <Box my={2}>
                   <Button
                     color="primary"
-                    //disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -142,20 +141,6 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-                {/* <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
-                    Sign up
-                  </Link>
-                </Typography> */}
               </form>
             )}
           </Formik>
