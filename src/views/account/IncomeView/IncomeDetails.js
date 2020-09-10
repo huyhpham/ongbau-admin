@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
-import { drinkData } from '../../../utils/data';
+import { getWeekOfMonth } from '../../../utils/groupBy';
 import {
   Box,
   Button,
@@ -92,7 +92,8 @@ const SalaryDetails = ({ className, ...rest }) => {
         const incomeItem = {
             date: values.date,
             data: currentSheet,
-            totalMoney: total
+            totalMoney: total,
+            week: getWeekOfMonth(values.date)
         }
         // console.log(incomeItem);
         dispatch(appActions.addIncomeItem(incomeItem));
