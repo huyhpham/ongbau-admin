@@ -16,11 +16,13 @@ export const GetSalaryList                      = '@APP:GET-SALARY-LIST';
 export const GetNewItem                         = '@APP:GET-NEW-ITEM';
 export const GetExpenseItem                     = '@APP:GET-EXPENSE-ITEM';
 export const GetDrinkItem                       = '@APP:GET-DRINK-ITEM';
+export const GetIncomeList                      = '@APP:GET-INCOME-LIST';
 
 export const SaveEmployeeList                   = '@APP:SAVE-EMPLOYEE-LIST';
 export const SaveCustomerList                   = '@APP:SAVE-CUSTOMER-LIST';
 export const SaveSalaryList                     = '@APP:SAVE-SALARY-LIST';
 export const SaveDrinkItem                      = '@APP:SAVE-DRINK-ITEM';
+export const SaveIncomeList                     = '@APP:SAVE-INCOME-LIST';
 
 export const GetError                           = '@APP:GET-ERROR';
 export const GetSuccess                         = '@APP:GET-SUCCESS';

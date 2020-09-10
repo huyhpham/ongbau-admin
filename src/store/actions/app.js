@@ -108,8 +108,16 @@ export function getDrinkItem() {
 	return { type: Actions.GetDrinkItem }
 }
 
+export function getIncomeList() {
+	return { type: Actions.GetIncomeList }
+}
+
 export function saveDrinkItem(values) {
 	return { type: Actions.SaveDrinkItem, values }
+}
+
+export function saveIncomeList(values) {
+	return { type: Actions.SaveIncomeList, values }
 }
 
 export function updateDrink(values) {

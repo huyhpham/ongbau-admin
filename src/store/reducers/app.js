@@ -10,7 +10,8 @@ const initialState = {
 	employeeSalaryList: [],
 	employeeList: [],
 	salaryList: [],
-	drinkList: []
+	drinkList: [],
+	incomeList: []
 };
 
 export default (state = initialState, action) => {
@@ -30,13 +31,15 @@ export default (state = initialState, action) => {
 	case Actions.GetEmployeeSalaryList:
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
 	case Actions.AddNewEmployeeList:
-		return { ...state, employeeSalaryList: action.values }
+		return { ...state, employeeSalaryList: action.values };
 	case Actions.SaveEmployeeList:
 		return { ...state, employeeList: action.values };
 	case Actions.SaveSalaryList:
 		return { ...state, salaryList: action.values };
 	case Actions.SaveDrinkItem:
-		return { ...state, drinkList: action.values }
+		return { ...state, drinkList: action.values };
+	case Actions.SaveIncomeList:
+		return { ...state, incomeList: action.values };
 	case Actions.ResetApp:
 		return initialState;
 	default:

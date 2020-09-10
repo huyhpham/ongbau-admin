@@ -7,17 +7,6 @@ const peristedState = loadState();
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
-// const enhancers = composerEnhancers(
-//     applyMiddleware(logger)
-// );
-
-// const store = createStore(
-//     allReducers,
-//     enhancers
-// );
-
-// export default store;
-
 export default function configureStore(initialState) {
 	const enhancers = composeEnhancers(
 		applyMiddleware(
@@ -26,7 +15,6 @@ export default function configureStore(initialState) {
 		),
 	);
 
-	//const store = createStore(allReducers, enhancers);
 	const store = initialState
 		? createStore(allReducers, initialState, enhancers)
 		: createStore(allReducers, enhancers);

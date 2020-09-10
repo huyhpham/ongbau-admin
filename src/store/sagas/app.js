@@ -101,6 +101,13 @@ function getDrinkItem() {
     );
 }
 
+function getIncomeList() {
+    const token = localStorage.getItem('silverBullet');
+    return axios.get(`${api.live}/income/`,
+        { headers: { Authorization: token } }
+    );
+}
+
 export function* loginSaga(action) {
     try {
         const history = action.payload.history,
@@ -265,6 +272,17 @@ export function* getDrinkItemSaga() {
     }
 }
 
+export function* getIncomeListSaga() {
+    try {
+        const response = yield call(getIncomeList);
+        if(response.status === 200) {
+            yield put(appActions.saveIncomeList(response.data));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export function* updateSalarySaga(action) {
     try {
         const response = yield call(updateSalaryToApi, action.values);
@@ -323,6 +341,7 @@ export default function* userSagas() {
        takeEvery(actions.AddExpenseItem, addExpenseItemSaga),
        takeEvery(actions.GetDrinkItem, getDrinkItemSaga),
        takeEvery(actions.UpdateDrink, updateDrinkSaga),
-       takeEvery(actions.AddIncomeItem, addIncomeItemSaga)
+       takeEvery(actions.AddIncomeItem, addIncomeItemSaga),
+       takeEvery(actions.GetIncomeList, getIncomeListSaga)
     ]);
 }

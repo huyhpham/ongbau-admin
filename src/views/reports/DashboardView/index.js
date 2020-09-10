@@ -36,6 +36,7 @@ const Dashboard = () => {
     dispatch(appActions.getCustomerList());
     dispatch(appActions.getEmployeeList());
     dispatch(appActions.getDrinkItem());
+    dispatch(appActions.getIncomeList());
     dispatch(appActions.getSalaryList(salary));
   }, []);
 

@@ -13,10 +13,12 @@ import {
   colors,
   makeStyles
 } from '@material-ui/core';
+import * as appActions from '../../../store/actions/app';
+import CurrencyFormat from 'react-currency-format';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-import * as appActions from '../../../store/actions/app';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,56 +48,57 @@ const useStyles = makeStyles((theme) => ({
 const TotalCustomers = ({ className, ...rest }) => {
   const classes = useStyles();
   const dispatch = useDispatch(),
-    currMonth = useSelector(state => state.app.currMonthCustomer),
-    lastMonth = useSelector(state => state.app.lastMonthCustomer),
+    incomeList = useSelector(state => state.app.incomeList),
+    [values, setValues] = useState({
+      date: '',
+      yesterday: '',
+      previousYesterday: ''
+    }),
     [increase, setIncrease] = useState(null),
-    [increasePercentage, setIncreasePercentage] = useState(0),
-    customerList = useSelector(state => state.app.customerList);
+    [yesterdayMoney, setYesterdayMoney] = useState(''),
+    [previousYesterdayMoney, setPreviousYesterdayMoney] = useState(''),
+    [increaseNumber, setIncreaseNumber] = useState(0);
+
+  useEffect(() => {
+    const today = moment().format('YYYY-MM-DD');
+    const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    const previousYesterday = moment().subtract(2, 'days').format('YYYY-MM-DD');
+    setValues({
+      ...values,
+      date: today,
+      yesterday: yesterday,
+      previousYesterday: previousYesterday
+    });
+  }, []);
   
-  const getMonthYearValue = (current) => {
-    let currMonthValue = {};
-    const currDate = moment(),
-      month = currDate.format('M'),
-      year  = currDate.format('YYYY');
-    if (current) {
-      currMonthValue = {
-        month: month,
-        year: parseInt(year)
-      }
-    } else {
-      currMonthValue = {
-        month: month - 1,
-        year: parseInt(year)
+  useEffect(() => {
+    let percentage = 0;
+    if (incomeList.length !== 0) {
+      incomeList.forEach((item) => {
+        if (item.date === values.yesterday) {
+          setYesterdayMoney(item.totalMoney);
+        }
+        if (item.date === values.previousYesterday) {
+          setPreviousYesterdayMoney(item.totalMoney);
+        }
+      });
+    }
+    
+  }, [incomeList]);
+
+  useEffect(() => {
+    if (yesterdayMoney !== '') {
+      const value = parseFloat(yesterdayMoney)/parseFloat(previousYesterdayMoney) - 1;
+      if (value > 0) {
+        setIncrease(true);
+        setIncreaseNumber((Math.abs(value) * 100).toFixed(2));
+      } else {
+        setIncrease(false);
+        setIncreaseNumber((Math.abs(value) * 100).toFixed(2));
       }
     }
     
-    return currMonthValue;
-  }
-
-  // const handleGetCurrCustomerListByMonth = async () => {
-  //   const currMonthValue = await getMonthYearValue(true);
-  //   dispatch(appActions.getCustomerListByMonth(currMonthValue, true));
-  // }
-
-  // const handleGetLastCustomerListByMonth = async () => {
-  //   const lastMonthValue = await getMonthYearValue(false);
-  //   dispatch(appActions.getCustomerListByMonth(lastMonthValue, false));
-  // }
-
-  // useEffect(() => {
-  //   handleGetCurrCustomerListByMonth();
-  //   handleGetLastCustomerListByMonth();
-  // }, []);
-
-  useEffect(() => {
-    if (currMonth - lastMonth > 0) {
-      setIncrease(true);
-      setIncreasePercentage(Math.floor(((currMonth - lastMonth) / (currMonth + lastMonth)) * 100));
-    } else {
-      setIncrease(false);
-      setIncreasePercentage(Math.floor((Math.abs(currMonth - lastMonth) / (currMonth + lastMonth)) * 100));
-    }
-  }, [currMonth, lastMonth]);
+  }, [yesterdayMoney]);
 
   return (
     <Card
@@ -114,18 +117,18 @@ const TotalCustomers = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TOTAL CUSTOMERS
+              {`${'Thu nhập ngày: '}${moment(values.yesterday).format('DD-MM-YYYY')}`}
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              {customerList.length}
+              <CurrencyFormat value={yesterdayMoney} displayType={'text'} thousandSeparator={true}/>
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <PeopleIcon />
+              <AttachMoneyIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -142,13 +145,13 @@ const TotalCustomers = ({ className, ...rest }) => {
             className={increase ? classes.increaseValue :  classes.decreaseValue}
             variant="body2"
           >
-            {increasePercentage} {'%'}
+            {increaseNumber} {'%'}
           </Typography>
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since last month
+            {`${'so với ngày: '}${moment(values.previousYesterday).format('DD-MM-YYYY')}`}
           </Typography>
         </Box>
       </CardContent>
