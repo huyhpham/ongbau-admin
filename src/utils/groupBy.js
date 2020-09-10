@@ -41,8 +41,10 @@ export const groupBy = (data) => {
 }
 
 export const getWeekOfMonth = (date) => {
-    let newDate = new Date(date);
-    let adjustedDate = newDate.getDate()+ newDate.getDay();
-    let prefixes = ['0', '1', '2', '3', '4', '5'];
-    return (parseInt(prefixes[0 | adjustedDate / 7])+1);
+    var d = new Date(date);
+    var d = new Date();
+    var date = d.getDate();
+    var day = d.getDay();
+    
+    return Math.ceil((date + 6 - day)/7);
 }
