@@ -11,14 +11,10 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  Grid,
   TextField,
   makeStyles,
   Snackbar,
   Typography,
-  FormControlLabel,
-  Checkbox,
-  Input
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import CurrencyFormat from 'react-currency-format';
@@ -34,6 +30,8 @@ const useStyles = makeStyles(() => ({
 const SalaryDetails = ({ className, ...rest }) => {
     const classes = useStyles(),
         dispatch = useDispatch(),
+        success = useSelector(state => state.error.success),
+        drinkItemList = useSelector(state => state.app.drinkList),
         inputRef = useRef(null);
 
     const [values, setValues] = useState({
@@ -53,6 +51,17 @@ const SalaryDetails = ({ className, ...rest }) => {
         })
     }, []);
 
+    useEffect(() => {
+        const handleOpen = (success) => {
+            setOpen(success);
+        }
+
+        if(success) {
+            handleApiResponse(success);
+            handleOpen(success);
+        }
+    }, [success]);
+
     const handleChange = (event) => {
         setValues({
         ...values,
@@ -60,13 +69,16 @@ const SalaryDetails = ({ className, ...rest }) => {
         });
     };
 
-    const handleApiResponse = () => {
-        setCurrentSheet([]);
+    const handleApiResponse = (success) => {
+        if (success) {
+            setCurrentSheet([]);
+            setTotal(0);
+        }
     }
     
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-        return;
+            return;
         }
         dispatch(appActions.getSuccess(false));
         setOpen(false);
@@ -82,7 +94,8 @@ const SalaryDetails = ({ className, ...rest }) => {
             data: currentSheet,
             totalMoney: total
         }
-        console.log(incomeItem);
+        // console.log(incomeItem);
+        dispatch(appActions.addIncomeItem(incomeItem));
     };
 
     const handleUpload = (event) => {
@@ -100,7 +113,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         let tempArray = [];
         let money = 0;
         let total = 0;
-        drinkData.forEach((item1) => {
+        drinkItemList.forEach((item1) => {
             result.forEach((item2) => {
                 if(item1.name === item2.ITEM_NAME) {
                     money = parseFloat(item1.price) * parseFloat(item2.QUANTITY);
@@ -118,8 +131,8 @@ const SalaryDetails = ({ className, ...rest }) => {
         setCurrentSheet(tempArray);
         setTotal(total + '000');
         // console.log(total);
-        // console.log(result);
         // console.log(tempArray);
+        // console.log(result);
     }
 
     return (
@@ -131,7 +144,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         >
         <Snackbar
             open={open}
-            autoHideDuration={3000}
+            autoHideDuration={1000}
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
@@ -238,7 +251,6 @@ const SalaryDetails = ({ className, ...rest }) => {
                     variant="contained"
                     onClick={() => {
                         handleSubmit();
-                        handleApiResponse();
                     }}
                 >
                     Lưu

@@ -99,3 +99,19 @@ export function getExpenseItem(values) {
 export function addExpenseItem(values) {
 	return { type: Actions.AddExpenseItem, values }
 }
+
+export function addIncomeItem(values) {
+	return { type: Actions.AddIncomeItem, values }
+}
+
+export function getDrinkItem() {
+	return { type: Actions.GetDrinkItem }
+}
+
+export function saveDrinkItem(values) {
+	return { type: Actions.SaveDrinkItem, values }
+}
+
+export function updateDrink(values) {
+	return { type: Actions.UpdateDrink, values }
+}

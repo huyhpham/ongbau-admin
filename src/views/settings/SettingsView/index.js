@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import Notifications from './Notifications';
 import Password from './Password';
 import Salary from './Salary';
+import DrinkItem from './DrinkItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,11 +35,23 @@ const SettingsView = () => {
         </Box>
         <Box mt={3}>
           <Grid
-            item
-            md={6}
-            xs={12}
+            container
+            spacing={3}
           >
-            <Salary />
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <Salary />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <DrinkItem />
+            </Grid>
           </Grid>
         </Box>
       </Container>

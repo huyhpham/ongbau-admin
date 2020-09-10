@@ -10,6 +10,7 @@ const initialState = {
 	employeeSalaryList: [],
 	employeeList: [],
 	salaryList: [],
+	drinkList: []
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +35,8 @@ export default (state = initialState, action) => {
 		return { ...state, employeeList: action.values };
 	case Actions.SaveSalaryList:
 		return { ...state, salaryList: action.values };
+	case Actions.SaveDrinkItem:
+		return { ...state, drinkList: action.values }
 	case Actions.ResetApp:
 		return initialState;
 	default:

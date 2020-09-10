@@ -66,6 +66,13 @@ function updateSalaryToApi(values) {
     );
 }
 
+function updateDrink(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.post(`${api.live}/drink/update`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
 function getSalaryListFromApi(values) {
     const token = localStorage.getItem('silverBullet');
     return axios.post(`${api.live}/setting/category-salary`, values,
@@ -76,6 +83,20 @@ function getSalaryListFromApi(values) {
 function addExpenseItem(values) {
     const token = localStorage.getItem('silverBullet');
     return axios.post(`${api.live}/interest/create`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
+function addIncomeItem(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.post(`${api.live}/income/create`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
+function getDrinkItem() {
+    const token = localStorage.getItem('silverBullet');
+    return axios.get(`${api.live}/drink/`,
         { headers: { Authorization: token } }
     );
 }
@@ -198,6 +219,19 @@ export function* addExpenseItemSaga(action) {
     }
 }
 
+export function* addIncomeItemSaga(action) {
+    try {
+        const response = yield call(addIncomeItem, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
 export function* getEmployeeListSaga() {
     try {
         const response = yield call(getEmployeeList);
@@ -220,9 +254,34 @@ export function* getSalaryListSaga(action) {
     }
 }
 
+export function* getDrinkItemSaga() {
+    try {
+        const response = yield call(getDrinkItem);
+        if(response.status === 200) {
+            yield put(appActions.saveDrinkItem(response.data));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export function* updateSalarySaga(action) {
     try {
         const response = yield call(updateSalaryToApi, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        console.log(err);
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
+export function* updateDrinkSaga(action) {
+    try {
+        const response = yield call(updateDrink, action.values);
         if (response.status === 200) {
             yield put(appActions.getSuccess(true));
             yield put(appActions.getError(false));
@@ -262,5 +321,8 @@ export default function* userSagas() {
        takeEvery(actions.AddEmployeeSalary, addEmployeeSalarySaga),
        takeEvery(actions.RemoveEmployeeSalary, removeEmployeeSalarySaga),
        takeEvery(actions.AddExpenseItem, addExpenseItemSaga),
+       takeEvery(actions.GetDrinkItem, getDrinkItemSaga),
+       takeEvery(actions.UpdateDrink, updateDrinkSaga),
+       takeEvery(actions.AddIncomeItem, addIncomeItemSaga)
     ]);
 }
