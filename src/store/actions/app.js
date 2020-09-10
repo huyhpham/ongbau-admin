@@ -123,3 +123,7 @@ export function saveIncomeList(values) {
 export function updateDrink(values) {
 	return { type: Actions.UpdateDrink, values }
 }
+
+export function updateIncome(values) {
+	return { type: Actions.UpdateIncome, values }
+}

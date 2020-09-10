@@ -95,7 +95,7 @@ const SalaryDetails = ({ className, ...rest }) => {
             totalMoney: total,
             week: getWeekOfMonth(values.date)
         }
-        // console.log(incomeItem);
+
         dispatch(appActions.addIncomeItem(incomeItem));
     };
 
@@ -131,9 +131,9 @@ const SalaryDetails = ({ className, ...rest }) => {
         });
         setCurrentSheet(tempArray);
         setTotal(total + '000');
-        console.log(total);
-        console.log(tempArray);
-        console.log(result);
+        // console.log(total);
+        // console.log(tempArray);
+        // console.log(result);
     }
 
     return (

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import {
   Avatar,
   Card,
@@ -11,6 +12,7 @@ import {
   colors
 } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import CurrencyFormat from 'react-currency-format';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,7 +26,18 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TotalProfit = ({ className, ...rest }) => {
-  const classes = useStyles();
+  const classes = useStyles(),
+    incomeList = useSelector(state => state.app.incomeList),
+    [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    if(incomeList.length !== 0) {
+      const sum = incomeList.reduce((a, { totalMoney }) => a + parseFloat(totalMoney), 0);
+      setTotal(sum);
+    } else {
+      setTotal(0);
+    }
+  }, [incomeList]);
 
   return (
     <Card
@@ -43,13 +56,13 @@ const TotalProfit = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              TOTAL PROFIT
+              Tổng thu nhập:
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              $23,200
+              <CurrencyFormat value={total} displayType={'text'} thousandSeparator={true}/>
             </Typography>
           </Grid>
           <Grid item>

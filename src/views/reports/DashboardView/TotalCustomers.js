@@ -19,7 +19,6 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
@@ -72,7 +71,6 @@ const TotalCustomers = ({ className, ...rest }) => {
   }, []);
   
   useEffect(() => {
-    let percentage = 0;
     if (incomeList.length !== 0) {
       incomeList.forEach((item) => {
         if (item.date === values.yesterday) {

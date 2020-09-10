@@ -5,6 +5,7 @@ export const UpdatePatientId                    = '@APP:UPDATE-PATIENT-ID';
 export const UpdateUserPassword                 = '@APP:UPDATE-USER-PASSWORD';
 export const UpdateSalary                       = '@APP:UPDATE-SALARY';
 export const UpdateDrink                        = '@APP:UPDATE-DRINK';
+export const UpdateIncome                       = '@APP:UPDATE-INCOME';
 
 export const GetCustomerList                    = '@APP:GET-CUSTOMER-LIST';
 export const GetCustomerListByMonth             = '@APP:GET-CUSTOMER-LIST-BY-MONTH';
