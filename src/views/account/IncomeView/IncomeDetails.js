@@ -22,6 +22,7 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import CurrencyFormat from 'react-currency-format';
+import moment from 'moment';
 import * as appActions from '../../../store/actions/app';
 
 import IncomeResults from './IncomeResult';
@@ -36,26 +37,21 @@ const SalaryDetails = ({ className, ...rest }) => {
         inputRef = useRef(null);
 
     const [values, setValues] = useState({
-            positionName: '',
-            positionKey: '',
-            normalDay: 0,
-            weekendDay: 0,
-            holiday: 0,
-            otherDay: 0,
-            isOverTime: false,
-            over8HoursDay: 0,
             date: '',
-            salaryRangeNormal: 0,
-            salaryRangeHoliday: 0,
-            salaryRangeWeekend: 0,
-            salaryRangeOtherDay: 0,
-            isOtherDay: false,
         }),
         [open, setOpen] = useState(false),
         [total, setTotal] = useState(0),
         [initialData, setInitialData] = useState(undefined),
         [filename, setFilename] = useState(''),
         [currentSheet, setCurrentSheet] = useState([]);
+
+    useEffect(() => {
+        const today = moment().format('YYYY-MM-DD');
+        setValues({
+            ...values,
+            date: today
+        })
+    }, []);
 
     const handleChange = (event) => {
         setValues({
@@ -81,7 +77,12 @@ const SalaryDetails = ({ className, ...rest }) => {
     };
 
     const handleSubmit = () => {
-        console.log('pressed');
+        const incomeItem = {
+            date: values.date,
+            data: currentSheet,
+            totalMoney: total
+        }
+        console.log(incomeItem);
     };
 
     const handleUpload = (event) => {
@@ -140,32 +141,54 @@ const SalaryDetails = ({ className, ...rest }) => {
         </Snackbar>
         <Card>
             <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
             >
                 <CardHeader
                     subheader={filename !== "" ? `${'Upload successful file: '}${filename}` : 'No item chosen.'}
-                    title="Thu nhập ngày"
+                    title={`${"Thu nhập ngày: "}${moment(values.date).format('DD-MM-YYYY')}`}
                 />
-                <input 
-                    ref={inputRef}
-                    type='file'
-                    accept='.xlsx'
-                    onChange={handleUpload}
-                    style={{ display: 'none' }}
-                />
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={e => {
-                        inputRef.current.click()
-                    }}
-                    style={{ marginRight: 10 }}
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
                 >
-                    Upload File
-                </Button>
+                    <TextField
+                        label="Ngày bán"
+                        name="date"
+                        id="date"
+                        type="date"
+                        onChange={handleChange}
+                        required
+                        value={values.date}
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        style={{ marginRight: 15 }}
+                    />
+                    <input 
+                        ref={inputRef}
+                        type='file'
+                        accept='.xlsx'
+                        onChange={handleUpload}
+                        style={{ display: 'none' }}
+                    />
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={e => {
+                            inputRef.current.click()
+                        }}
+                        style={{ marginRight: 10 }}
+                    >
+                        Upload File
+                    </Button>
+                </Box>
+                
             </Box>
             <Divider />
             <CardContent>
