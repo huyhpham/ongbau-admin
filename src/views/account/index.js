@@ -17,6 +17,7 @@ import SalaryDetails from './SalaryView/SalaryDetails';
 import SalaryResults from './SalaryView/SalaryResult';
 import ExpenseDetails from './ExpenseView/ExpenseDetails';
 import ExpenseResults from './ExpenseView/ExpenseResult';
+import IncomeDetails from './IncomeView/IncomeDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +80,7 @@ const Account = () => {
               <Tab label="Nhập nguyên liệu" {...a11yProps(0)} />
               <Tab label="Tính lương" {...a11yProps(1)} />
               <Tab label="Tính thu chi" {...a11yProps(2)} />
+              <Tab label="Tính thu nhập hàng ngày" {...a11yProps(3)} />
             </Tabs>
           </Paper>
           <TabPanel value={value} index={0}>
@@ -150,6 +152,22 @@ const Account = () => {
                 xs={12}
               >
                 <ExpenseDetails />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={12}
+                md={6}
+                xs={12}
+              >
+                <IncomeDetails />
               </Grid>
             </Grid>
           </TabPanel>
