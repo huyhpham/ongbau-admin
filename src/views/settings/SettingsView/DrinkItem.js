@@ -10,7 +10,8 @@ import {
   Divider,
   TextField,
   makeStyles,
-  Snackbar
+  Snackbar,
+  Switch 
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,8 +30,15 @@ const DrinkItem = ({ className, ...rest }) => {
     [isError, setIsError] = useState(false),
     [errorMessage, setErrorMessage] = useState(''),
     [values, setValues] = useState({
-        drinkPrice: '',
-        drinkId: '',
+      drinkPrice: '',
+      drinkId: '',
+    }),
+    [newValues, setNewValues] = useState({
+      drinkPrice: '',
+      drinkName: '',
+    }),
+    [state, setState] = React.useState({
+      isAddNew: false,
     }),
     [open, setOpen] = useState(false),
     [employeeName, setEmployeeName] = useState(null),
@@ -52,6 +60,17 @@ const DrinkItem = ({ className, ...rest }) => {
             ...values,
             [event.target.name]: event.target.value
         });
+    };
+
+    const handleNewChange = (event) => {
+      setNewValues({
+          ...newValues,
+          [event.target.name]: event.target.value
+      });
+  };
+
+    const handleSwitch = (event) => {
+      setState({ ...state, [event.target.name]: event.target.checked });
     };
 
     const handleApiResponse = (success) => {
@@ -90,13 +109,23 @@ const DrinkItem = ({ className, ...rest }) => {
     };
 
     const handleUpdate = () => {
-        const drinkItem = {
+        if(state.isAddNew === true) {
+          const newDrinkItem = {
+            name: newValues.drinkName,
+            price: newValues.drinkPrice
+          }
+
+          dispatch(appActions.addDrinkItem(newDrinkItem));
+        } else {
+          const drinkItem = {
             itemId: values.drinkId,
             name: employeeName,
             price: values.drinkPrice
+          }
+
+          dispatch(appActions.updateDrink(drinkItem));
         }
-        // console.log(drinkItem);
-        dispatch(appActions.updateDrink(drinkItem));
+        
     }
 
   return (
@@ -115,12 +144,52 @@ const DrinkItem = ({ className, ...rest }) => {
         </Alert>
       </Snackbar>
       <Card>
-        <CardHeader
-          subheader="Cập nhập giá theo từng món nước"
-          title="Món nước"
-        />
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <CardHeader
+            subheader="Cập nhập giá theo từng món nước"
+            title="Món nước"
+          />
+          <Switch
+            checked={state.isAddNew}
+            onChange={handleSwitch}
+            color="primary"
+            name="isAddNew"
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        </Box>
+        
         <Divider />
-        <CardContent>
+        {state.isAddNew 
+        ? <CardContent>
+            <TextField
+                fullWidth
+                label="Món nước"
+                margin="normal"
+                name="drinkName"
+                onChange={handleNewChange}
+                value={newValues.drinkName}
+                variant="outlined"
+                error={isError}
+                helperText={errorMessage}
+            />
+            <TextField
+                fullWidth
+                label="Giá tiền"
+                margin="normal"
+                name="drinkPrice"
+                onChange={handleNewChange}
+                value={newValues.drinkPrice}
+                variant="outlined"
+                error={isError}
+                helperText={errorMessage}
+            />
+        </CardContent>
+        : <CardContent>
             <Autocomplete
                 id="combo-box-demo"
                 value={employeeName}
@@ -144,6 +213,7 @@ const DrinkItem = ({ className, ...rest }) => {
                 helperText={errorMessage}
             />
         </CardContent>
+        }
         <Divider />
         <Box
           display="flex"
@@ -155,7 +225,7 @@ const DrinkItem = ({ className, ...rest }) => {
             variant="contained"
             onClick={() => {handleUpdate();}}
           >
-            Update
+            {state.isAddNew ? "Thêm" : "Cập nhập"}
           </Button>
         </Box>
       </Card>

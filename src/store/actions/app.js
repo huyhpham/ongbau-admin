@@ -104,6 +104,10 @@ export function addIncomeItem(values) {
 	return { type: Actions.AddIncomeItem, values }
 }
 
+export function addDrinkItem(values) {
+	return { type: Actions.AddDrinkItem, values }
+}
+
 export function getDrinkItem() {
 	return { type: Actions.GetDrinkItem }
 }

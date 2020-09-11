@@ -33,6 +33,7 @@ export const AddExpenseItem                     = '@APP:ADD-EXPENSE-ITEM';
 export const AddEmployeeSalary                  = '@APP:ADD-EMPLOYEE-SALARY';
 export const AddNewEmployeeList                 = '@APP:ADD-NEW-EMPLOYEE-LIST';
 export const AddIncomeItem                      = '@APP:ADD-INCOME-ITEM';
+export const AddDrinkItem                       = '@APP:ADD-DRINK-ITEM';
 
 export const ResetApp                           = '@APP:RESET-APP';
 
