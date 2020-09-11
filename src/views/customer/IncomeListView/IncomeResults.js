@@ -99,27 +99,68 @@ const IncomeListResults = ({ className, ...rest }) => {
                                                                 flexDirection="row"
                                                                 style={{ marginLeft: 15 }}
                                                             >
-                                                                <Typography
-                                                                    color="textSecondary"
-                                                                    variant="body2"
+                                                                <Box
+                                                                    alignItems="center"
+                                                                    display="flex"
+                                                                    flexDirection="row"
+                                                                    style={{ marginLeft: 15 }}
                                                                 >
-                                                                    {`${'Ngày: '}${moment(item.date).format('DD-MM-YYYY')}`} 
-                                                                </Typography>
-                                                                <Typography
-                                                                    color="textSecondary"
-                                                                    variant="body2"
-                                                                    style={{ marginLeft: 10 }}
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                    >
+                                                                        {`${'Ngày: '}`} 
+                                                                    </Typography>
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                        style={{ marginLeft: 5, fontWeight: '600'}}
+                                                                    >
+                                                                        {`${moment(item.date).format('DD-MM-YYYY')}`} 
+                                                                    </Typography>
+                                                                </Box>
+                                                                <Box
+                                                                    alignItems="center"
+                                                                    display="flex"
+                                                                    flexDirection="row"
+                                                                    style={{ marginLeft: 15 }}
                                                                 >
-                                                                    {`${'Tổng số ly bán được: '}${item.totalQuantity}`} 
-                                                                </Typography>
-                                                                <Typography
-                                                                    color="textSecondary"
-                                                                    variant="body2"
-                                                                    style={{ marginLeft: 10 }}
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                        style={{ marginLeft: 10 }}
+                                                                    >
+                                                                        {`${'Tổng số ly bán được: '}`} 
+                                                                    </Typography>
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                        style={{ marginLeft: 5, fontWeight: '600'}}
+                                                                    >
+                                                                        {`${item.totalQuantity}`} 
+                                                                    </Typography>
+                                                                </Box>
+                                                                <Box
+                                                                    alignItems="center"
+                                                                    display="flex"
+                                                                    flexDirection="row"
+                                                                    style={{ marginLeft: 15 }}
                                                                 >
-                                                                    {`${'Tổng tiền: '}`}
-                                                                    <CurrencyFormat value={item.totalMoney} displayType={'text'} thousandSeparator={true}/>
-                                                                </Typography>
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                        style={{ marginLeft: 10 }}
+                                                                    >
+                                                                        {`${'Tổng tiền: '}`}
+                                                                    </Typography>
+                                                                    <Typography
+                                                                        color="textSecondary"
+                                                                        variant="body2"
+                                                                        style={{ marginLeft: 5, fontWeight: '600'}}
+                                                                    >
+                                                                        <CurrencyFormat value={item.totalMoney} displayType={'text'} thousandSeparator={true}/>
+                                                                    </Typography>
+                                                                </Box>
                                                             </Box>
                                                     </div>
                                                 })}

@@ -11,6 +11,8 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
+import { groupByMonth } from '../../../utils/groupBy';
+import moment from 'moment';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import CurrencyFormat from 'react-currency-format';
 
@@ -28,12 +30,22 @@ const useStyles = makeStyles(() => ({
 const TotalProfit = ({ className, ...rest }) => {
   const classes = useStyles(),
     incomeList = useSelector(state => state.app.incomeList),
+    [month, setMonth] = useState(''),
     [total, setTotal] = useState(0);
 
   useEffect(() => {
+    const month = moment().format('M');
+    setMonth(month);
     if(incomeList.length !== 0) {
-      const sum = incomeList.reduce((a, { totalMoney }) => a + parseFloat(totalMoney), 0);
-      setTotal(sum);
+      const tempArray = groupByMonth(incomeList);
+      tempArray.forEach((item) => {
+        item.data.forEach((item) => {
+          if(item.month === month) {
+            const sum = item.data.reduce((a, { totalMoney }) => a + parseFloat(totalMoney), 0);
+            setTotal(sum);
+          }
+        });
+      });
     } else {
       setTotal(0);
     }
@@ -56,7 +68,7 @@ const TotalProfit = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              Tổng thu nhập:
+              {`${'Tổng thu nhập của tháng '}${month}`}
             </Typography>
             <Typography
               color="textPrimary"
