@@ -86,6 +86,8 @@ const CustomerListView = () => {
           <Tabs
             value={value}
             onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
           >
             <Tab label="Nguyên vật liệu" {...a11yProps(0)} />
             <Tab label="Thu chi" {...a11yProps(1)} />

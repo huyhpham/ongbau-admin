@@ -76,6 +76,8 @@ const Account = () => {
             <Tabs
               value={value}
               onChange={handleChange}
+              variant="scrollable"
+              scrollButtons="auto"
             >
               <Tab label="Nhập nguyên liệu" {...a11yProps(0)} />
               <Tab label="Tính lương" {...a11yProps(1)} />
@@ -116,7 +118,7 @@ const Account = () => {
               <Grid
                 item
                 lg={8}
-                md={6}
+                md={7}
                 xs={12}
               >
                 <SalaryResults customers={employeeSalaryList}/>
@@ -124,7 +126,7 @@ const Account = () => {
               <Grid
                 item
                 lg={4}
-                md={6}
+                md={5}
                 xs={12}
               >
                 <SalaryDetails />
@@ -140,7 +142,7 @@ const Account = () => {
               <Grid
                 item
                 lg={5}
-                md={6}
+                md={5}
                 xs={12}
               >
                 <ExpenseResults/>
@@ -148,7 +150,7 @@ const Account = () => {
               <Grid
                 item
                 lg={7}
-                md={6}
+                md={7}
                 xs={12}
               >
                 <ExpenseDetails />
@@ -164,7 +166,7 @@ const Account = () => {
               <Grid
                 item
                 lg={12}
-                md={6}
+                md={12}
                 xs={12}
               >
                 <IncomeDetails />
