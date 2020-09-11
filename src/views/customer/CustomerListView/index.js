@@ -16,6 +16,7 @@ import { groups, groupBy } from '../../../utils/groupBy';
 import Page from 'src/components/Page';
 import Results from './Results';
 import EmployeeResults from '../EmployeeListView/EmployeeResults';
+import IncomeResults from '../IncomeListView/IncomeResults';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,6 +90,7 @@ const CustomerListView = () => {
             <Tab label="Nguyên vật liệu" {...a11yProps(0)} />
             <Tab label="Thu chi" {...a11yProps(1)} />
             <Tab label="Nhân viên" {...a11yProps(2)} />
+            <Tab label="Thu nhập tháng" {...a11yProps(3)} />
           </Tabs>
         </Paper>
         <TabPanel value={value} index={0}>
@@ -99,6 +101,9 @@ const CustomerListView = () => {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <EmployeeResults customers={employeeList}/>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <IncomeResults />
         </TabPanel>
       </Container>
     </Page>

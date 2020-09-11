@@ -15,6 +15,8 @@ import {
   makeStyles,
   Snackbar,
   Typography,
+  Checkbox,
+  FormControlLabel
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import CurrencyFormat from 'react-currency-format';
@@ -27,7 +29,7 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const SalaryDetails = ({ className, ...rest }) => {
+const IncomeDetails = ({ className, ...rest }) => {
     const classes = useStyles(),
         dispatch = useDispatch(),
         success = useSelector(state => state.error.success),
@@ -36,11 +38,14 @@ const SalaryDetails = ({ className, ...rest }) => {
 
     const [values, setValues] = useState({
             date: '',
+            isDiscount: false,
+            discountValue: '',
         }),
         [open, setOpen] = useState(false),
         [total, setTotal] = useState(0),
         [initialData, setInitialData] = useState(undefined),
         [filename, setFilename] = useState(''),
+        [totalQuantity, setTotalQuantity] = useState(0),
         [currentSheet, setCurrentSheet] = useState([]);
 
     useEffect(() => {
@@ -64,8 +69,8 @@ const SalaryDetails = ({ className, ...rest }) => {
 
     const handleChange = (event) => {
         setValues({
-        ...values,
-        [event.target.name]: event.target.value
+            ...values,
+            [event.target.name]: event.target.value
         });
     };
 
@@ -89,10 +94,20 @@ const SalaryDetails = ({ className, ...rest }) => {
     };
 
     const handleSubmit = () => {
+        let tempTotal = 0;
+        if(values.isDiscount) {
+            tempTotal = parseFloat(total) - (parseFloat(total)*(parseFloat(values.discountValue)/100));
+            setTotal(tempTotal);
+        } else {
+            tempTotal = parseFloat(total);
+        }
         const incomeItem = {
             date: values.date,
             data: currentSheet,
-            totalMoney: total,
+            totalMoney: tempTotal,
+            totalQuantity: totalQuantity,
+            isDiscount: values.isDiscount,
+            discountValue: values.discountValue,
             week: getWeekOfMonth(values.date)
         }
 
@@ -109,16 +124,25 @@ const SalaryDetails = ({ className, ...rest }) => {
         .catch((error) => console.error(error));
     };
 
+    const handleDiscount = () => {
+        setValues({
+            ...values,
+            isDiscount: !values.isDiscount
+        });
+    }
+
     const handleGenerateExcelToJson = (value) => {
         const result = generateObjects(value);
         let tempArray = [];
         let money = 0;
         let total = 0;
+        let totalQuantity = 0;
         drinkItemList.forEach((item1) => {
             result.forEach((item2) => {
                 if(item1.name === item2.ITEM_NAME) {
                     money = parseFloat(item1.price) * parseFloat(item2.QUANTITY);
                     total += Number(money);
+                    totalQuantity += Number(parseFloat(item2.QUANTITY));
                     const tempObj = {
                         name: item1.name,
                         quantity: item2.QUANTITY,
@@ -131,6 +155,9 @@ const SalaryDetails = ({ className, ...rest }) => {
         });
         setCurrentSheet(tempArray);
         setTotal(total + '000');
+        setTotalQuantity(totalQuantity);
+        //console.log(totalQuantity);
+        //console.log(parseFloat('10%'))
         // console.log(total);
         // console.log(tempArray);
         // console.log(result);
@@ -150,7 +177,7 @@ const SalaryDetails = ({ className, ...rest }) => {
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
             <Alert onClose={handleClose} severity="success">
-            Update Successfully!
+                Update Successfully!
             </Alert>
         </Snackbar>
         <Card>
@@ -170,6 +197,28 @@ const SalaryDetails = ({ className, ...rest }) => {
                     alignItems="center"
                     justifyContent="space-between"
                 >
+                    <FormControlLabel
+                        control={
+                        <Checkbox
+                            checked={values.isDiscount}
+                            onChange={handleDiscount}
+                            name="isDiscount"
+                            color="primary"
+                        />
+                        }
+                        label="Giảm giá"
+                    />
+                    {values.isDiscount
+                    ?   <TextField
+                            label="Giảm giá bao nhiêu %"
+                            name="discountValue"
+                            onChange={handleChange}
+                            value={values.discountValue}
+                            variant="outlined"
+                            style={{ marginRight: 15 }}
+                        />
+                        : <div/>
+                    }
                     <TextField
                         label="Ngày bán"
                         name="date"
@@ -262,8 +311,8 @@ const SalaryDetails = ({ className, ...rest }) => {
     );
 };
 
-SalaryDetails.propTypes = {
+IncomeDetails.propTypes = {
   className: PropTypes.string
 };
 
-export default SalaryDetails;
+export default IncomeDetails;
