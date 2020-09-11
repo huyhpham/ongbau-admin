@@ -108,7 +108,7 @@ const IncomeListResults = ({ className, ...rest }) => {
                                                                 <Typography
                                                                     color="textSecondary"
                                                                     variant="body2"
-                                                                    
+                                                                    style={{ marginLeft: 10 }}
                                                                 >
                                                                     {`${'Tổng số ly bán được: '}${item.totalQuantity}`} 
                                                                 </Typography>
