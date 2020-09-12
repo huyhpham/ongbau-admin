@@ -93,17 +93,19 @@ const IncomeListResults = ({ className, ...rest }) => {
                                                     return <div
                                                             key={index}
                                                         >
-                                                            <Box
-                                                                alignItems="center"
-                                                                display="flex"
-                                                                flexDirection="row"
-                                                                style={{ marginLeft: 15 }}
+                                                            <Divider
+                                                                style={{ marginTop: 10 }}
+                                                            />
+                                                            <Grid
+                                                                item
+                                                                md={12}
+                                                                xs={12}
                                                             >
                                                                 <Box
                                                                     alignItems="center"
                                                                     display="flex"
                                                                     flexDirection="row"
-                                                                    style={{ marginLeft: 15 }}
+                                                                    style={{ marginLeft: 15, marginTop: 10 }}
                                                                 >
                                                                     <Typography
                                                                         color="textSecondary"
@@ -119,6 +121,12 @@ const IncomeListResults = ({ className, ...rest }) => {
                                                                         {`${moment(item.date).format('DD-MM-YYYY')}`} 
                                                                     </Typography>
                                                                 </Box>
+                                                            </Grid>
+                                                            <Grid
+                                                                item
+                                                                md={12}
+                                                                xs={12}
+                                                            >
                                                                 <Box
                                                                     alignItems="center"
                                                                     display="flex"
@@ -140,28 +148,39 @@ const IncomeListResults = ({ className, ...rest }) => {
                                                                         {`${item.totalQuantity}`} 
                                                                     </Typography>
                                                                 </Box>
-                                                                <Box
-                                                                    alignItems="center"
-                                                                    display="flex"
-                                                                    flexDirection="row"
-                                                                    style={{ marginLeft: 15 }}
+                                                            </Grid>
+                                                            <Grid
+                                                                container
+                                                                spacing={3}
+                                                            >
+                                                                <Grid
+                                                                    item
+                                                                    md={12}
+                                                                    xs={12}
                                                                 >
-                                                                    <Typography
-                                                                        color="textSecondary"
-                                                                        variant="body2"
-                                                                        style={{ marginLeft: 10 }}
+                                                                    <Box
+                                                                        alignItems="center"
+                                                                        display="flex"
+                                                                        flexDirection="row"
+                                                                        style={{ marginLeft: 15 }}
                                                                     >
-                                                                        {`${'Tổng tiền: '}`}
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        color="textSecondary"
-                                                                        variant="body2"
-                                                                        style={{ marginLeft: 5, fontWeight: '600'}}
-                                                                    >
-                                                                        <CurrencyFormat value={item.totalMoney} displayType={'text'} thousandSeparator={true}/>
-                                                                    </Typography>
-                                                                </Box>
-                                                            </Box>
+                                                                        <Typography
+                                                                            color="textSecondary"
+                                                                            variant="body2"
+                                                                            style={{ marginLeft: 10 }}
+                                                                        >
+                                                                            {`${'Tổng tiền: '}`}
+                                                                        </Typography>
+                                                                        <Typography
+                                                                            color="textSecondary"
+                                                                            variant="body2"
+                                                                            style={{ marginLeft: 5, fontWeight: '600'}}
+                                                                        >
+                                                                            <CurrencyFormat value={item.totalMoney} displayType={'text'} thousandSeparator={true}/>
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Grid>
+                                                            </Grid>
                                                     </div>
                                                 })}
                                             </div>

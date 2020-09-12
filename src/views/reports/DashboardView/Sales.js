@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Bar } from 'react-chartjs-2';
+import { useSelector } from 'react-redux';
+import { groupBy, getWeekOfMonth } from '../../../utils/groupBy'
 import {
   Box,
   Button,
@@ -13,6 +16,7 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
+import CurrencyFormat from 'react-currency-format';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
@@ -22,22 +26,55 @@ const useStyles = makeStyles(() => ({
 
 const Sales = ({ className, ...rest }) => {
   const classes = useStyles();
-  const theme = useTheme();
+  const theme = useTheme(),
+    incomeList = useSelector(state => state.app.incomeList),
+    [formatData, setFormatData] = useState([]),
+    [label, setLabel] = useState([]),
+    [money, setMoney] = useState([]);
+
+  useEffect(() => {
+    const today = moment().format('YYYY-MM-DD');
+    const month  = moment().format('M');
+    const week = getWeekOfMonth(today);
+
+    if(incomeList.length !== 0) {
+      const tempArray = groupBy(incomeList);
+      setFormatData(tempArray);
+      tempArray.forEach((item) => {
+        item.data.forEach((item) => {
+          if(item.month === month) {
+            item.data.forEach((item) => {
+              if(item.week === week.toString()) {
+                let tempLable = [];
+                let tempMoneyData = [];
+                item.data.forEach((item) => {
+                  tempLable.push(item.date);
+                  tempMoneyData.push(item.totalMoney);
+                });
+                setLabel(tempLable);
+                setMoney(tempMoneyData);
+                }
+            });
+          }
+        });
+      });
+    }
+  }, [incomeList]);
 
   const data = {
     datasets: [
       {
         backgroundColor: colors.indigo[500],
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
+        data: money,
+        label: 'This week'
       },
-      {
-        backgroundColor: colors.grey[200],
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
-      }
+      // {
+      //   backgroundColor: colors.grey[200],
+      //   data: [11, 20, 12, 29, 30, 25, 13],
+      //   label: 'Last year'
+      // }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: label
   };
 
   const options = {
@@ -55,7 +92,7 @@ const Sales = ({ className, ...rest }) => {
           barPercentage: 0.5,
           categoryPercentage: 0.5,
           ticks: {
-            fontColor: theme.palette.text.secondary
+            fontColor: theme.palette.text.secondary,
           },
           gridLines: {
             display: false,
@@ -68,7 +105,10 @@ const Sales = ({ className, ...rest }) => {
           ticks: {
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
-            min: 0
+            min: 0,
+            callback(value) {
+              return Number(value).toLocaleString('en')
+            }
           },
           gridLines: {
             borderDash: [2],
@@ -91,7 +131,17 @@ const Sales = ({ className, ...rest }) => {
       footerFontColor: theme.palette.text.secondary,
       intersect: false,
       mode: 'index',
-      titleFontColor: theme.palette.text.primary
+      titleFontColor: theme.palette.text.primary,
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var value = data.datasets[0].data[tooltipItem.index];
+          if(parseInt(value) >= 1000){
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          } else {
+            return value;
+          }
+      }
+      }
     }
   };
 
