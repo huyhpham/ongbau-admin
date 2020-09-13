@@ -69,7 +69,9 @@ const Sales = ({ className, ...rest }) => {
               if(item.week === weekCheck.toString()) {
                 let tempLable = [];
                 let tempMoneyData = [];
-                item.data.forEach((item) => {
+                item.data.sort(function(a,b){
+                  return new Date(a.date) - new Date(b.date);
+                }).forEach((item) => {
                   tempLable.push(item.date);
                   tempMoneyData.push(item.totalMoney);
                 });
@@ -79,7 +81,9 @@ const Sales = ({ className, ...rest }) => {
                 setWeek(weekArray[weekArray.length -1]);
                 let tempLable = [];
                 let tempMoneyData = [];
-                item.data.forEach((item) => {
+                item.data.sort(function(a,b){
+                  return new Date(a.date) - new Date(b.date);
+                }).forEach((item) => {
                   tempLable.push(item.date);
                   tempMoneyData.push(item.totalMoney);
                 });
@@ -186,7 +190,9 @@ const Sales = ({ className, ...rest }) => {
             if(item.week === event.target.value) {
               let tempLable = [];
               let tempMoneyData = [];
-              item.data.forEach((item) => {
+              item.data.sort(function(a,b){
+                return new Date(a.date) - new Date(b.date);
+              }).forEach((item) => {
                 tempLable.push(item.date);
                 tempMoneyData.push(item.totalMoney);
               });
@@ -212,7 +218,9 @@ const Sales = ({ className, ...rest }) => {
               
               let tempLable = [];
               let tempMoneyData = [];
-              item.data.forEach((item) => {
+              item.data.sort(function(a,b){
+                return new Date(a.date) - new Date(b.date);
+              }).forEach((item) => {
                 tempLable.push(item.date);
                 tempMoneyData.push(item.totalMoney);
               });

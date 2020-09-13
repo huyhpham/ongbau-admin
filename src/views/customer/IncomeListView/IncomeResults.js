@@ -12,7 +12,7 @@ import {
   Typography,
   Accordion,
   AccordionSummary,
-  AccordionDetails 
+  AccordionDetails,
 } from '@material-ui/core';
 import CurrencyFormat from 'react-currency-format';
 import moment from 'moment';
