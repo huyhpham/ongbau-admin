@@ -69,7 +69,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
             ))
           }
             <Button
-              activeClassName={classes.active}
               className={classes.button}
               onClick={handleLogOut}
             >
