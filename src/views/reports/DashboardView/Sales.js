@@ -67,18 +67,7 @@ const Sales = ({ className, ...rest }) => {
               weekArray.push(item.week);
               setWeekArray(weekArray);
               if(item.week === weekCheck.toString()) {
-                let tempLable = [];
-                let tempMoneyData = [];
-                item.data.sort(function(a,b){
-                  return new Date(a.date) - new Date(b.date);
-                }).forEach((item) => {
-                  tempLable.push(item.date);
-                  tempMoneyData.push(item.totalMoney);
-                });
-                setLabel(tempLable);
-                setMoney(tempMoneyData);
-              } else if (item.week === weekArray[weekArray.length -1]) {
-                setWeek(weekArray[weekArray.length -1]);
+                setWeek(weekCheck);
                 let tempLable = [];
                 let tempMoneyData = [];
                 item.data.sort(function(a,b){
