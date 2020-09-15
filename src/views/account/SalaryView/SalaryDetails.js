@@ -111,7 +111,6 @@ const SalaryDetails = ({ className, ...rest }) => {
 
   const handleSubmit = () => {
     let totalMoney = 0;
-    const today = moment().format('YYYY-MM-DD');
     if (values.isOverTime) {
         if(values.isOtherDay) {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
@@ -141,7 +140,7 @@ const SalaryDetails = ({ className, ...rest }) => {
         otherDay: values.otherDay,
         isOverTime: values.isOverTime,
         over8HoursDay: values.over8HoursDay,
-        date: today,
+        date: values.date,
         totalMoney: totalMoney + '000'
     }
 
@@ -184,6 +183,11 @@ const SalaryDetails = ({ className, ...rest }) => {
 
   useEffect(() => {
     setNewEmployeeList(employeeList);
+    const today = moment().format('YYYY-MM-DD');
+    setValues({
+      ...values,
+      date: today
+    })
   }, []);
 
   useEffect(() => {
@@ -231,7 +235,7 @@ const SalaryDetails = ({ className, ...rest }) => {
       </Snackbar>
       <Card>
         <CardHeader
-          subheader="Nhớ kiểm tra nguyên vật liệu sau mỗi ngày bán hàng."
+          //subheader="Nhớ kiểm tra nguyên vật liệu sau mỗi ngày bán hàng."
           title="Bảng tính lương"
         />
         <Divider />
@@ -271,6 +275,26 @@ const SalaryDetails = ({ className, ...rest }) => {
                 required
                 value={values.positionName}
                 variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Ngày tính lương"
+                name="date"
+                id="date"
+                type="date"
+                onChange={handleChange}
+                required
+                value={values.date}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid
