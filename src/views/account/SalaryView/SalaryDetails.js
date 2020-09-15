@@ -115,19 +115,19 @@ const SalaryDetails = ({ className, ...rest }) => {
     if (values.isOverTime) {
         if(values.isOtherDay) {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
-                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + 20 * values.over8HoursDay + values.otherDay * values.salaryRangeOtherDay);
+                + values.salaryRangeHoliday * values.holiday + 20 * values.over8HoursDay + values.otherDay * values.salaryRangeOtherDay);
         } else {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
-                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + 20 * values.over8HoursDay);
+                + values.salaryRangeHoliday * values.holiday + 20 * values.over8HoursDay);
         }
         
     } else {
         if(values.isOtherDay) {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
-                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday + values.otherDay * values.salaryRangeOtherDay);
+                + values.salaryRangeHoliday * values.holiday + values.otherDay * values.salaryRangeOtherDay);
         } else {
             totalMoney = (values.salaryRangeNormal * values.normalDay + values.salaryRangeWeekend * values.weekendDay 
-                + values.salaryRangeHoliday * values.salaryRangeNormal * values.holiday);
+                + values.salaryRangeHoliday * values.holiday);
         }
     }
 
