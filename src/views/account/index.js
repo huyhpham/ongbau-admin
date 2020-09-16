@@ -18,6 +18,8 @@ import SalaryResults from './SalaryView/SalaryResult';
 import ExpenseDetails from './ExpenseView/ExpenseDetails';
 import ExpenseResults from './ExpenseView/ExpenseResult';
 import IncomeDetails from './IncomeView/IncomeDetails';
+import GoodsDetails from './GoodsView/GoodsDetails';
+import GoodsResults from './GoodsView/GoodsResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,12 +81,37 @@ const Account = () => {
               variant="scrollable"
               scrollButtons="auto"
             >
-              <Tab label="Nhập nguyên liệu" {...a11yProps(0)} />
+              <Tab label="Nguyên liệu order" {...a11yProps(0)} />
+              <Tab label="Nguyên liệu trong kho" {...a11yProps(0)} />
               <Tab label="Tính lương" {...a11yProps(1)} />
               <Tab label="Tính thu chi" {...a11yProps(2)} />
               <Tab label="Tính thu nhập hàng ngày" {...a11yProps(3)} />
             </Tabs>
           </Paper>
+          <TabPanel value={value} index={0}>
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+            >
+              <Grid
+                item
+                lg={8}
+                md={7}
+                xs={12}
+              >
+                <GoodsResults />
+              </Grid>
+              <Grid
+                item
+                lg={4}
+                md={5}
+                xs={12}
+              >
+                <GoodsDetails />
+              </Grid>
+            </Grid>
+          </TabPanel>
           <TabPanel value={value} index={0}>
             <Grid
               container
