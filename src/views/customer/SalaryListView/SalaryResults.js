@@ -42,7 +42,7 @@ const SalaryListResults = ({ className, ...rest }) => {
             className={clsx(classes.root, className)}
             {...rest}
         >
-            {formatData.map((item, index) => {
+            {formatData.length !== 0 ? formatData.map((item, index) => {
                 return <div
                     key={index}
                 >
@@ -133,7 +133,25 @@ const SalaryListResults = ({ className, ...rest }) => {
                         </div>
                     })}
                 </div>
-            })}
+            }) : <Box
+                    alignItems="center"
+                    display="flex"
+                    flexDirection="row"
+                    style={{
+                        marginLeft: 15,
+                        marginTop: 10,
+                        paddingBottom: 5,
+                        alignItems:"center",
+                        justifyContent:"center"
+                    }}
+                >
+                    <Typography
+                        color="textSecondary"
+                        variant="body2"
+                    >
+                        NO ITEM TO SHOW
+                    </Typography>
+                </Box>}
         </Card>
     );
 };
