@@ -11,15 +11,16 @@ const initialState = {
 	employeeList: [],
 	salaryList: [],
 	drinkList: [],
-	incomeList: []
+	incomeList: [],
+	employeeSalary: [],
 };
 
 export default (state = initialState, action) => {
 	switch (action.type) {
 	case Actions.GetUser:
 		return { ...state, user: action.user };
-	case Actions.SaveCustomerList:
-		return { ...state, customerList: action.customerList};
+	case Actions.AddNewEmployeeList:
+		return { ...state, employeeSalaryList: action.values };
 	case Actions.GetCurrMonthCustomer: 
 		 return { ...state, currMonthCustomer: action.values };
 	case Actions.GetLastMonthCustomer: 
@@ -30,8 +31,8 @@ export default (state = initialState, action) => {
 		return { ...state, expenseItem: action.values };
 	case Actions.GetEmployeeSalaryList:
 		return { ...state, employeeSalaryList: state.employeeSalaryList.concat(action.values) };
-	case Actions.AddNewEmployeeList:
-		return { ...state, employeeSalaryList: action.values };
+	case Actions.SaveCustomerList:
+		return { ...state, customerList: action.customerList};
 	case Actions.SaveEmployeeList:
 		return { ...state, employeeList: action.values };
 	case Actions.SaveSalaryList:
@@ -40,6 +41,8 @@ export default (state = initialState, action) => {
 		return { ...state, drinkList: action.values };
 	case Actions.SaveIncomeList:
 		return { ...state, incomeList: action.values };
+	case Actions.SaveEmployeeSalary:
+		return { ...state, employeeSalary: action.values };
 	case Actions.ResetApp:
 		return initialState;
 	default:

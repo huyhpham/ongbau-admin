@@ -38,6 +38,7 @@ const Dashboard = () => {
     dispatch(appActions.getDrinkItem());
     dispatch(appActions.getIncomeList());
     dispatch(appActions.getSalaryList(salary));
+    dispatch(appActions.getEmployeeSalary());
   }, []);
 
   return (

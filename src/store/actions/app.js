@@ -116,6 +116,10 @@ export function getIncomeList() {
 	return { type: Actions.GetIncomeList }
 }
 
+export function getEmployeeSalary() {
+	return { type: Actions.GetEmployeeSalary }
+}
+
 export function saveDrinkItem(values) {
 	return { type: Actions.SaveDrinkItem, values }
 }
@@ -124,10 +128,18 @@ export function saveIncomeList(values) {
 	return { type: Actions.SaveIncomeList, values }
 }
 
+export function saveEmployeeSalary(values) {
+	return { type: Actions.SaveEmployeeSalary, values }
+}
+
 export function updateDrink(values) {
 	return { type: Actions.UpdateDrink, values }
 }
 
 export function updateIncome(values) {
 	return { type: Actions.UpdateIncome, values }
+}
+
+export function updateEmployeeSalary(values) {
+	return { type: Actions.UpdateEmployeeSalary, values }
 }

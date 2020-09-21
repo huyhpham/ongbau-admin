@@ -80,6 +80,13 @@ function updateIncome(values) {
     );
 }
 
+function updateEmployeeSalary(values) {
+    const token = localStorage.getItem('silverBullet');
+    return axios.post(`${api.live}/salary/update`, values,
+        { headers: { Authorization: token } }
+    );
+}
+
 function getSalaryListFromApi(values) {
     const token = localStorage.getItem('silverBullet');
     return axios.post(`${api.live}/setting/category-salary`, values,
@@ -118,6 +125,13 @@ function getDrinkItem() {
 function getIncomeList() {
     const token = localStorage.getItem('silverBullet');
     return axios.get(`${api.live}/income/`,
+        { headers: { Authorization: token } }
+    );
+}
+
+function getEmployeeSalary() {
+    const token = localStorage.getItem('silverBullet');
+    return axios.get(`${api.live}/salary/`,
         { headers: { Authorization: token } }
     );
 }
@@ -310,6 +324,17 @@ export function* getIncomeListSaga() {
     }
 }
 
+export function* getEmployeeSalarySaga() {
+    try {
+        const response = yield call(getEmployeeSalary);
+        if(response.status === 200) {
+            yield put(appActions.saveEmployeeSalary(response.data));
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export function* updateSalarySaga(action) {
     try {
         const response = yield call(updateSalaryToApi, action.values);
@@ -327,6 +352,20 @@ export function* updateSalarySaga(action) {
 export function* updateDrinkSaga(action) {
     try {
         const response = yield call(updateDrink, action.values);
+        if (response.status === 200) {
+            yield put(appActions.getSuccess(true));
+            yield put(appActions.getError(false));
+        }
+    } catch (err) {
+        console.log(err);
+        yield put(appActions.getSuccess(false));
+        yield put(appActions.getError(true));
+    }
+}
+
+export function* updateEmployeeSalarySaga(action) {
+    try {
+        const response = yield call(updateEmployeeSalary, action.values);
         if (response.status === 200) {
             yield put(appActions.getSuccess(true));
             yield put(appActions.getError(false));
@@ -385,6 +424,8 @@ export default function* userSagas() {
        takeEvery(actions.UpdateIncome, updateIncomeSaga),
        takeEvery(actions.AddIncomeItem, addIncomeItemSaga),
        takeEvery(actions.AddDrinkItem, addDrinkItemSaga),
-       takeEvery(actions.GetIncomeList, getIncomeListSaga)
+       takeEvery(actions.GetIncomeList, getIncomeListSaga),
+       takeEvery(actions.GetEmployeeSalary, getEmployeeSalarySaga),
+       takeEvery(actions.UpdateEmployeeSalary, updateEmployeeSalarySaga)
     ]);
 }

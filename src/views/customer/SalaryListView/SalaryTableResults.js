@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SalaryResults = ({ className, customers, ...rest }) => {
+const SalaryTableResults = ({ className, customers, date, ...rest }) => {
   const classes = useStyles(),
     dispatch = useDispatch(),
     [values, setValues] = useState({
@@ -32,8 +32,11 @@ const SalaryResults = ({ className, customers, ...rest }) => {
       year: '',
     }),
     [total, setTotal] = useState(0),
-    success = useSelector(state => state.error.success),
-    [open, setOpen] = useState(false);
+    [isEdit, setIsEdit] = useState(false),
+    [open, setOpen] = useState(false),
+    [data, setData] = useState([]),
+    employeeSalary = useSelector(state => state.app.employeeSalary),
+    success = useSelector(state => state.error.success);
 
   useEffect(() => {
     const today = moment().format('YYYY-MM-DD');
@@ -47,13 +50,9 @@ const SalaryResults = ({ className, customers, ...rest }) => {
 
   useEffect(() => {
     if (customers.length !== 0) {
-      let total = 0;
-      customers.forEach((item) => {
-        total += Number(item.totalMoney);
-      });
-      setTotal(total);
+      setData(customers);
     } else {
-      setTotal(0);
+      setTotal([]);
     }
   }, [customers]);
 
@@ -88,16 +87,22 @@ const SalaryResults = ({ className, customers, ...rest }) => {
   };
 
   const handleSubmit = () => {
-    const salaryItem = {
-      date: values.date,
-      month: values.month,
-      year: values.year,
-      week: getWeekOfMonth(values.date),
-      data: customers,
-      totalMoney: total
-    }
-
-    dispatch(appActions.addEmployeeSalary(salaryItem));
+    employeeSalary.forEach((item) => {
+      if(item.date === date) {
+        const salaryItem = {
+          id: item._id,
+          date: date,
+          month: item.month,
+          year: item.year,
+          week: getWeekOfMonth(date),
+          data: data,
+          totalMoney: item.total
+        }
+        
+        console.log(salaryItem);
+        dispatch(appActions.updateEmployeeSalary(salaryItem));
+      }
+    });
   }
 
   return (
@@ -118,46 +123,66 @@ const SalaryResults = ({ className, customers, ...rest }) => {
       <MaterialTable
         title="Bảng lương nhân viên"
         columns={itemsHeader}
-        data={customers}
+        data={data}
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
           exportButton: true,
           exportFileName: `Bảng lương tháng ${values.month}${'/'}${values.year}`,
         }}
-        actions={[
-          {
-            icon: 'delete',
-            tooltip: 'Delete User',
-            onClick: (event, rowData) => {
-              let tempArray = [];
-              tempArray = customers.filter(function( obj ) {
-                return obj.employeeName !== rowData.employeeName;
-              });
+        // actions={[
+        //   {
+        //     icon: 'edit',
+        //     tooltip: 'Edit User',
+        //     onClick: async (event, rowData) => {
+        //       await setIsEdit(true);
+        //       // let tempArray = [];
+        //       // tempArray = customers.filter(function( obj ) {
+        //       //   return obj.employeeName !== rowData.employeeName;
+        //       // });
 
-              dispatch(appActions.addNewEmployeeList(tempArray));
-            }
-          },
-        ]}
+        //       // dispatch(appActions.addNewEmployeeList(tempArray));
+        //       console.log(rowData);
+        //     }
+        //   },
+        // ]}
+        editable={{
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve, reject) => {
+              setIsEdit(true);
+              setTimeout(() => {
+                const dataUpdate = [...data];
+                const index = oldData.tableData.id;
+                dataUpdate[index] = newData;
+                setData([...dataUpdate]);
+                resolve();
+              }, 1000);
+            }),
+        }}
       />
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-end"
-        p={2}
-      >
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-              handleSubmit();
-          }}
-        >
-          Lưu
-        </Button>
-      </Box>
+      {
+        isEdit 
+        ? <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-end"
+            p={2}
+          >
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                  handleSubmit();
+              }}
+            >
+              Lưu
+            </Button>
+          </Box> 
+        : <div/>
+      }
       
     </Card>
+    
   );
 };
 
@@ -167,6 +192,11 @@ const itemsHeader = [
       title: "Thời gian tính lương",
       field: "fromDate",
       field: "toDate",
+      cellStyle: {
+        width: '15%',
+        maxWidth: 20,
+      },
+      align: "center",
       render: row => <span>{  `${moment(row["fromDate"]).format('DD/MM/YYYY')}${' - '}${moment(row["toDate"]).format('DD/MM/YYYY')}` }</span>
   },
   {
@@ -207,9 +237,9 @@ const itemsHeader = [
   }
 ];
 
-SalaryResults.propTypes = {
+SalaryTableResults.propTypes = {
   className: PropTypes.string,
   customers: PropTypes.array.isRequired
 };
 
-export default SalaryResults;
+export default SalaryTableResults;

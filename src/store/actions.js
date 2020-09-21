@@ -6,6 +6,7 @@ export const UpdateUserPassword                 = '@APP:UPDATE-USER-PASSWORD';
 export const UpdateSalary                       = '@APP:UPDATE-SALARY';
 export const UpdateDrink                        = '@APP:UPDATE-DRINK';
 export const UpdateIncome                       = '@APP:UPDATE-INCOME';
+export const UpdateEmployeeSalary               = '@APP:UPDATE-EMPLOYEE-SALARY';
 
 export const GetCustomerList                    = '@APP:GET-CUSTOMER-LIST';
 export const GetCustomerListByMonth             = '@APP:GET-CUSTOMER-LIST-BY-MONTH';
@@ -18,12 +19,14 @@ export const GetNewItem                         = '@APP:GET-NEW-ITEM';
 export const GetExpenseItem                     = '@APP:GET-EXPENSE-ITEM';
 export const GetDrinkItem                       = '@APP:GET-DRINK-ITEM';
 export const GetIncomeList                      = '@APP:GET-INCOME-LIST';
+export const GetEmployeeSalary                  = '@APP:GET-EMPLOYEE-SALARY';
 
 export const SaveEmployeeList                   = '@APP:SAVE-EMPLOYEE-LIST';
 export const SaveCustomerList                   = '@APP:SAVE-CUSTOMER-LIST';
 export const SaveSalaryList                     = '@APP:SAVE-SALARY-LIST';
 export const SaveDrinkItem                      = '@APP:SAVE-DRINK-ITEM';
 export const SaveIncomeList                     = '@APP:SAVE-INCOME-LIST';
+export const SaveEmployeeSalary                 = '@APP:SAVE-EMPLOYEE-SALARY';
 
 export const GetError                           = '@APP:GET-ERROR';
 export const GetSuccess                         = '@APP:GET-SUCCESS';

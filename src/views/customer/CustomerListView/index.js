@@ -17,6 +17,7 @@ import Page from 'src/components/Page';
 import Results from './Results';
 import EmployeeResults from '../EmployeeListView/EmployeeResults';
 import IncomeResults from '../IncomeListView/IncomeResults';
+import SalaryResults from '../SalaryListView/SalaryResults';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,6 +94,7 @@ const CustomerListView = () => {
             <Tab label="Thu chi" {...a11yProps(1)} />
             <Tab label="Nhân viên" {...a11yProps(2)} />
             <Tab label="Thu nhập tháng" {...a11yProps(3)} />
+            <Tab label="Tiền lương" {...a11yProps(4)} />
           </Tabs>
         </Paper>
         <TabPanel value={value} index={0}>
@@ -106,6 +108,9 @@ const CustomerListView = () => {
         </TabPanel>
         <TabPanel value={value} index={3}>
           <IncomeResults />
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <SalaryResults />
         </TabPanel>
       </Container>
     </Page>
