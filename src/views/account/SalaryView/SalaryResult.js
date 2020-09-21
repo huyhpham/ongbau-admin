@@ -165,8 +165,9 @@ const itemsHeader = [
   {
       id: 7,
       title: "Ngày tính lương",
-      field: "date",
-      render: row => <span>{  moment(row["date"]).format('DD/MM/YYYY') }</span>
+      field: "fromDate",
+      field: "toDate",
+      render: row => <span>{  `${moment(row["fromDate"]).format('DD/MM/YYYY')}${' - '}${moment(row["toDate"]).format('DD/MM/YYYY')}` }</span>
   },
   {
       id: 1,

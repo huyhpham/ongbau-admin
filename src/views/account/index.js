@@ -81,14 +81,14 @@ const Account = () => {
               variant="scrollable"
               scrollButtons="auto"
             >
-              <Tab label="Nguyên liệu order" {...a11yProps(0)} />
+              {/* <Tab label="Nguyên liệu order" {...a11yProps(0)} /> */}
               <Tab label="Nguyên liệu trong kho" {...a11yProps(0)} />
               <Tab label="Tính lương" {...a11yProps(1)} />
               <Tab label="Tính thu chi" {...a11yProps(2)} />
               <Tab label="Tính thu nhập hàng ngày" {...a11yProps(3)} />
             </Tabs>
           </Paper>
-          <TabPanel value={value} index={0}>
+          {/* <TabPanel value={value} index={0}>
             <Grid
               container
               spacing={3}
@@ -111,7 +111,7 @@ const Account = () => {
                 <GoodsDetails />
               </Grid>
             </Grid>
-          </TabPanel>
+          </TabPanel> */}
           <TabPanel value={value} index={0}>
             <Grid
               container

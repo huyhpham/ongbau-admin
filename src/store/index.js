@@ -10,7 +10,7 @@ const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOO
 export default function configureStore(initialState) {
 	const enhancers = composeEnhancers(
 		applyMiddleware(
-			//logger,
+			logger,
 			sagaMiddleware,
 		),
 	);

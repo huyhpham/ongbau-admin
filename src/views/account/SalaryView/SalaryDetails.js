@@ -43,6 +43,8 @@ const SalaryDetails = ({ className, ...rest }) => {
         isOverTime: false,
         over8HoursDay: 0,
         date: '',
+        fromDate: '',
+        toDate: '',
         salaryRangeNormal: 0,
         salaryRangeHoliday: 0,
         salaryRangeWeekend: 0,
@@ -93,6 +95,8 @@ const SalaryDetails = ({ className, ...rest }) => {
         salaryRangeWeekend: 0,
         salaryRangeOtherDay: 0,
         isOtherDay: false,
+        fromDate: '',
+        toDate: '',
       });
       setEmployeeName(null);
   }
@@ -131,17 +135,19 @@ const SalaryDetails = ({ className, ...rest }) => {
     }
 
     const employee = {
-        employeeName: employeeName,
-        positionName: values.positionName,
-        positionKey: values.positionKey,
-        normalDay: values.normalDay,
-        weekendDay: values.weekendDay,
-        holiday: values.holiday,
-        otherDay: values.otherDay,
-        isOverTime: values.isOverTime,
-        over8HoursDay: values.over8HoursDay,
-        date: values.date,
-        totalMoney: totalMoney + '000'
+      employeeName: employeeName,
+      positionName: values.positionName,
+      positionKey: values.positionKey,
+      normalDay: values.normalDay,
+      weekendDay: values.weekendDay,
+      holiday: values.holiday,
+      otherDay: values.otherDay,
+      isOverTime: values.isOverTime,
+      over8HoursDay: values.over8HoursDay,
+      date: values.date,
+      totalMoney: totalMoney + '000',
+      fromDate: values.fromDate,
+      toDate: values.toDate
     }
 
     dispatch(appActions.getEmployeeSalaryList(employee));
@@ -252,8 +258,18 @@ const SalaryDetails = ({ className, ...rest }) => {
               <Autocomplete
                 id="combo-box-demo"
                 value={employeeName}
-                options={newEmployeeList.map((option) => option.name)}
-                onChange={(event, value) => {setEmployeeName(value); handleGetPosition(value);}}
+                // options={newEmployeeList.map((option) => option.name)}
+                // groupBy={() => newEmployeeList.map((option) => option.position)}
+                // onChange={(event, value) => {
+                //   setEmployeeName(value);
+                //   handleGetPosition(value);}}
+                options={ newEmployeeList }
+                groupBy={ option => option.position }
+                getOptionLabel={ option => option.name ? option.name : employeeName }
+                onChange={(event, value) => {
+                  setEmployeeName(value.name);
+                  handleGetPosition(value.name);
+                }}
                 inputValue={inputValue}
                 onInputChange={(event, newInputValue) => {
                   setInputValue(newInputValue);
@@ -284,13 +300,33 @@ const SalaryDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Ngày tính lương"
-                name="date"
-                id="date"
+                label="Từ ngày"
+                name="fromDate"
+                id="fromDate"
                 type="date"
                 onChange={handleChange}
                 required
-                value={values.date}
+                value={values.fromDate}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Đến ngày"
+                name="toDate"
+                id="toDate"
+                type="date"
+                onChange={handleChange}
+                required
+                value={values.toDate}
                 variant="outlined"
                 InputLabelProps={{
                   shrink: true,
