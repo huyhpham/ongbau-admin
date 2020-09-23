@@ -27,13 +27,20 @@ const SalaryListResults = ({ className, ...rest }) => {
     const classes = useStyles(),
         employeeSalary = useSelector(state => state.app.employeeSalary);
 
-    const [formatData, setFormatData] = useState([]);
+    const [formatData, setFormatData] = useState([]),
+        [total, setTotal] = useState(0);
 
     useEffect(() => {
         if(employeeSalary.length !== 0) {
             const tempArray = groupBy(employeeSalary);
-            console.log(tempArray);
             setFormatData(tempArray);
+            let total = 0;
+                employeeSalary.forEach((item) => {
+                    total += Number(item.totalMoney);
+                });
+            setTotal(total);
+        } else {
+            setTotal(0);
         }
     }, [employeeSalary]);
 
@@ -71,7 +78,40 @@ const SalaryListResults = ({ className, ...rest }) => {
                                     id="panel1a-header"
                                    
                                 >
-                                    <Typography className={classes.heading}>{`${'Tháng '}${item.month}`}</Typography>
+                                    {/* <Typography className={classes.heading}>{`${'Tháng '}${item.month}`}</Typography> */}
+                                    <Grid
+                                        item
+                                        md={12}
+                                        xs={12}
+                                    >
+                                        <Box
+                                            alignItems="center"
+                                            display="flex"
+                                            flexDirection="row"
+                                            style={{ marginLeft: 15, marginTop: 10, alignItems: 'center', justifyContent: 'space-between' }}
+                                        >
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                                style={{ width: '30%' }}
+                                            >
+                                                {`${'Tháng '}${item.month}`} 
+                                            </Typography>
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                                style={{ marginLeft: 5, fontWeight: '600'}}
+                                            >
+                                                {`${'Tổng tiền lương phải trả: '}`}
+                                                <CurrencyFormat
+                                                    value={`${total}`}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    style={{ color: 'red'}}
+                                                />
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
                                 </AccordionSummary>
                                 <AccordionDetails
                                     style={{ display: 'flex', flexDirection: 'column', paddingTop: 0 }}
