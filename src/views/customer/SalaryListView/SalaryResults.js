@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { groupBy } from '../../../utils/groupBy';
+import { groupBy, getWeekOfMonth } from '../../../utils/groupBy';
 import {
   Box,
   Card,
@@ -28,17 +28,58 @@ const SalaryListResults = ({ className, ...rest }) => {
         employeeSalary = useSelector(state => state.app.employeeSalary);
 
     const [formatData, setFormatData] = useState([]),
+        [state, setState] = useState({
+            month: 0,
+            week: 0,
+            year: 0,
+            date: ''
+        }),
         [total, setTotal] = useState(0);
 
     useEffect(() => {
         if(employeeSalary.length !== 0) {
             const tempArray = groupBy(employeeSalary);
-            setFormatData(tempArray);
+            //setFormatData(tempArray);
+            const today = moment().format('YYYY-MM-DD');
+            const month = moment().format('M');
+            const week = getWeekOfMonth(today);
+            const year = moment().format('YYYY');
+
             let total = 0;
-                employeeSalary.forEach((item) => {
-                    total += Number(item.totalMoney);
+            let newArray = [];
+            employeeSalary.forEach((item) => {
+                console.log(item);
+                total += Number(item.totalMoney);
+                item.data.forEach(item => {
+                    newArray.push(item);
                 });
+            });
+
+            var output = [];
+            newArray.forEach(function(item) {
+                var existing = output.filter(function(v, i) {
+                    return v.employeeName == item.employeeName;
+                });
+                if (existing.length) {
+                    var existingIndex = output.indexOf(existing[0]);
+                    output[existingIndex].totalMoney = output[existingIndex].totalMoney.concat(item.totalMoney);
+                } else {
+                    if (typeof item.totalMoney == 'string')
+                    item.totalMoney = [item.totalMoney];
+                    output.push(item);
+                }
+            });
             setTotal(total);
+            const obj = {
+                month: month,
+                week: week,
+                year: year,
+                date: employeeSalary[employeeSalary.length - 1].date,
+                data: output,
+            };
+            const newData = [];
+            newData.push(obj);
+            setFormatData(groupBy(newData));
         } else {
             setTotal(0);
         }

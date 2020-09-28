@@ -98,8 +98,7 @@ const SalaryTableResults = ({ className, customers, date, ...rest }) => {
           data: data,
           totalMoney: item.total
         }
-        
-        console.log(salaryItem);
+
         dispatch(appActions.updateEmployeeSalary(salaryItem));
       }
     });
@@ -186,6 +185,25 @@ const SalaryTableResults = ({ className, customers, date, ...rest }) => {
   );
 };
 
+
+const renderSalaryValue = (value) => {
+  if(value.length === 1 ) {
+    return (
+      <CurrencyFormat value={`${value}`} displayType={'text'} thousandSeparator={true}/>
+    )
+  } else {
+    return (
+      <CurrencyFormat value={`${
+        value.reduce(function(a, b){
+          return parseInt(a) + parseInt(b);
+        }, 0)}`} 
+        displayType={'text'} 
+        thousandSeparator={true}
+        />
+    )
+  }
+}
+
 const itemsHeader = [
   {
       id: 7,
@@ -233,7 +251,18 @@ const itemsHeader = [
       id: 8,
       title: "Tiền lương",
       field: "totalMoney",
-      render: row => <span><CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/></span>
+      render: row => <span>{
+          // row["totalMoney"].length === 1 
+          // ? <CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/>
+          // : <CurrencyFormat value={`${
+          //    row["totalMoney"].reduce(function(a, b){
+          //     return a + b;
+          //     }, 0)}`} 
+          //     displayType={'text'} 
+          //     thousandSeparator={true}
+          //   />
+          renderSalaryValue(row["totalMoney"])
+        }</span>
   }
 ];
 
