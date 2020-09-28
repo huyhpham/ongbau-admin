@@ -195,12 +195,30 @@ const renderSalaryValue = (value) => {
     return (
       <CurrencyFormat value={`${
         value.reduce(function(a, b){
-          return parseInt(a) + parseInt(b);
+          return parseFloat(a) + parseFloat(b);
         }, 0)}`} 
         displayType={'text'} 
         thousandSeparator={true}
         />
     )
+  }
+}
+
+const renderHolidayValue = (value) => {
+  if(value.length === 1 ) {
+    return value;
+  } else {
+    return value.reduce(function(a, b){
+      return parseFloat(a) + parseFloat(b);
+    }, 0)
+  }
+}
+
+const renderToDate = (value) => {
+  if(value.length === 1 ) {
+    return moment(value[0]).format('DD/MM/YYYY');
+  } else {
+    return moment(value[value.length - 1]).format('DD/MM/YYYY');
   }
 }
 
@@ -215,7 +233,7 @@ const itemsHeader = [
         maxWidth: 20,
       },
       align: "center",
-      render: row => <span>{  `${moment(row["fromDate"]).format('DD/MM/YYYY')}${' - '}${moment(row["toDate"]).format('DD/MM/YYYY')}` }</span>
+      render: row => <span>{  `${moment(row["fromDate"]).format('DD/MM/YYYY')}${' - '}${renderToDate(row["toDate"])}` }</span>
   },
   {
       id: 1,
@@ -230,39 +248,43 @@ const itemsHeader = [
   {
       id: 3,
       title: "Số giờ làm trong tuần",
-      field: "normalDay"
+      field: "normalDay",
+      render: row => <span>{
+        renderHolidayValue(row["normalDay"])
+      }</span>
   },
   {
       id: 4,
       title: "Số giờ làm cuối tuần",
-      field: "weekendDay"
+      field: "weekendDay",
+      render: row => <span>{
+        renderHolidayValue(row["weekendDay"])
+      }</span>
   },
   {
       id: 5,
       title: "Số giờ làm ngày lễ",
       field: "holiday",
+      render: row => <span>{
+        renderHolidayValue(row["holiday"])
+      }</span>
   },
   {
       id: 6,
       title: "Số giờ làm ngoài giờ",
-      field: "otherDay"
+      field: "otherDay",
+      render: row => <span>{
+        renderHolidayValue(row["otherDay"])
+      }</span>
+      
   },
   {
       id: 8,
       title: "Tiền lương",
       field: "totalMoney",
       render: row => <span>{
-          // row["totalMoney"].length === 1 
-          // ? <CurrencyFormat value={`${row["totalMoney"]}`} displayType={'text'} thousandSeparator={true}/>
-          // : <CurrencyFormat value={`${
-          //    row["totalMoney"].reduce(function(a, b){
-          //     return a + b;
-          //     }, 0)}`} 
-          //     displayType={'text'} 
-          //     thousandSeparator={true}
-          //   />
-          renderSalaryValue(row["totalMoney"])
-        }</span>
+        renderSalaryValue(row["totalMoney"])
+      }</span>
   }
 ];
 

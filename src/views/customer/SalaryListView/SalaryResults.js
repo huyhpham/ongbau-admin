@@ -48,7 +48,6 @@ const SalaryListResults = ({ className, ...rest }) => {
             let total = 0;
             let newArray = [];
             employeeSalary.forEach((item) => {
-                console.log(item);
                 total += Number(item.totalMoney);
                 item.data.forEach(item => {
                     newArray.push(item);
@@ -63,9 +62,21 @@ const SalaryListResults = ({ className, ...rest }) => {
                 if (existing.length) {
                     var existingIndex = output.indexOf(existing[0]);
                     output[existingIndex].totalMoney = output[existingIndex].totalMoney.concat(item.totalMoney);
+                    output[existingIndex].holiday = output[existingIndex].holiday.concat(item.holiday);
+                    output[existingIndex].normalDay = output[existingIndex].normalDay.concat(item.normalDay);
+                    output[existingIndex].otherDay = output[existingIndex].otherDay.concat(item.otherDay);
+                    output[existingIndex].over8HoursDay = output[existingIndex].over8HoursDay.concat(item.over8HoursDay);
+                    output[existingIndex].weekendDay = output[existingIndex].weekendDay.concat(item.weekendDay);
+                    output[existingIndex].toDate = output[existingIndex].toDate.concat(item.toDate);
                 } else {
                     if (typeof item.totalMoney == 'string')
                     item.totalMoney = [item.totalMoney];
+                    item.holiday = [item.holiday];
+                    item.normalDay = [item.normalDay];
+                    item.otherDay = [item.otherDay];
+                    item.over8HoursDay = [item.over8HoursDay];
+                    item.weekendDay = [item.weekendDay];
+                    item.toDate = [item.toDate];
                     output.push(item);
                 }
             });
