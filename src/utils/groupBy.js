@@ -117,6 +117,57 @@ export const groupByMonth = (data) => {
     return formatDataTwice;
 }
 
+export const groupByYear = (data) => {
+    var groupYear = data.reduce((newData, item) => {
+        newData[item.year] = [...newData[item.year] || [], item];
+        return newData;
+    }, {}); // Group year
+
+    var formatDataTwice = [];
+    Object.keys(groupYear).forEach(key => {
+        let value = groupYear[key];
+        let tempData = {
+            year: key,
+            data: value
+        }
+        formatDataTwice.push(tempData);
+    });
+
+    return formatDataTwice;
+}
+
+
+export function mergeValueOfTheSameObject(array) {
+    var output = [];
+    array.forEach(function(item) {
+        var existing = output.filter(function(v, i) {
+            return v.employeeName == item.employeeName;
+        });
+        if (existing.length) {
+            var existingIndex = output.indexOf(existing[0]);
+            output[existingIndex].totalMoney = output[existingIndex].totalMoney.concat(item.totalMoney);
+            output[existingIndex].holiday = output[existingIndex].holiday.concat(item.holiday);
+            output[existingIndex].normalDay = output[existingIndex].normalDay.concat(item.normalDay);
+            output[existingIndex].otherDay = output[existingIndex].otherDay.concat(item.otherDay);
+            output[existingIndex].over8HoursDay = output[existingIndex].over8HoursDay.concat(item.over8HoursDay);
+            output[existingIndex].weekendDay = output[existingIndex].weekendDay.concat(item.weekendDay);
+            output[existingIndex].toDate = output[existingIndex].toDate.concat(item.toDate);
+        } else {
+            if (typeof item.totalMoney == 'string')
+            item.totalMoney = [item.totalMoney];
+            item.holiday = [item.holiday];
+            item.normalDay = [item.normalDay];
+            item.otherDay = [item.otherDay];
+            item.over8HoursDay = [item.over8HoursDay];
+            item.weekendDay = [item.weekendDay];
+            item.toDate = [item.toDate];
+            output.push(item);
+        }
+    });
+
+    return output;
+};
+
 export const getWeekOfMonth = (date) => {
 
     var d = new Date(date);

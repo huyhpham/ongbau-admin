@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { groupBy, getWeekOfMonth } from '../../../utils/groupBy';
+import { groupByYear, getWeekOfMonth, groupByMonth, mergeValueOfTheSameObject, removeDuplicateValueInArray } from '../../../utils/groupBy';
 import {
   Box,
   Card,
@@ -35,67 +35,70 @@ const SalaryListResults = ({ className, ...rest }) => {
             date: ''
         }),
         [total, setTotal] = useState(0);
+    
+    const totalMoney = (array) => {
+        console.log(array);
+        let total = 0;
+        array.forEach((item) => {
+            if(item.totalMoney.length !== 1) {
+                item.totalMoney.forEach((item2) => {
+                    total  += Number(item2);
+                })
+            } else {
+                total += Number(item.totalMoney);
+            }
+            
+        });
+
+        return total;
+    }
 
     useEffect(() => {
-        if(employeeSalary.length !== 0) {
-            const tempArray = groupBy(employeeSalary);
-            //setFormatData(tempArray);
-            const today = moment().format('YYYY-MM-DD');
-            const month = moment().format('M');
-            const week = getWeekOfMonth(today);
-            const year = moment().format('YYYY');
-
-            let total = 0;
-            let newArray = [];
-            employeeSalary.forEach((item) => {
-                total += Number(item.totalMoney);
-                item.data.forEach(item => {
-                    newArray.push(item);
+        const formatEmployeeSalary = async (employeeSalary) => {
+            if(employeeSalary.length !== 0) {
+                const tempArray = await groupByMonth(employeeSalary);
+                let newTotalArray = [];
+    
+                await tempArray.forEach((item1) => {
+                    item1.data.forEach((item2) => {
+                        var newArray = [];
+                        let total = 0;
+                        item2.data.forEach((item3) => {
+                            item3.data.map((item4) => {
+                                total += Number(item4.totalMoney);
+                                newArray.push(item4);
+                            });
+                            
+                            const newObj = {
+                                year: item1.year,
+                                month: item2.month,
+                                data: newArray,
+                            }
+                            newTotalArray.push(newObj);
+                            
+                        });
+                    });
                 });
-            });
 
-            console.log(tempArray);
-
-            var output = [];
-            newArray.forEach(function(item) {
-                var existing = output.filter(function(v, i) {
-                    return v.employeeName == item.employeeName;
+                var result = await newTotalArray.reduce((unique, o) => {
+                    if(!unique.some(obj => obj.year === o.year && obj.month === o.month)) {
+                      unique.push(o);
+                    }
+                    return unique;
+                },[]);
+    
+                await result.forEach((item, index) => {
+                    var value = mergeValueOfTheSameObject(item.data);
+                    result[index].data = value;
                 });
-                if (existing.length) {
-                    var existingIndex = output.indexOf(existing[0]);
-                    output[existingIndex].totalMoney = output[existingIndex].totalMoney.concat(item.totalMoney);
-                    output[existingIndex].holiday = output[existingIndex].holiday.concat(item.holiday);
-                    output[existingIndex].normalDay = output[existingIndex].normalDay.concat(item.normalDay);
-                    output[existingIndex].otherDay = output[existingIndex].otherDay.concat(item.otherDay);
-                    output[existingIndex].over8HoursDay = output[existingIndex].over8HoursDay.concat(item.over8HoursDay);
-                    output[existingIndex].weekendDay = output[existingIndex].weekendDay.concat(item.weekendDay);
-                    output[existingIndex].toDate = output[existingIndex].toDate.concat(item.toDate);
-                } else {
-                    if (typeof item.totalMoney == 'string')
-                    item.totalMoney = [item.totalMoney];
-                    item.holiday = [item.holiday];
-                    item.normalDay = [item.normalDay];
-                    item.otherDay = [item.otherDay];
-                    item.over8HoursDay = [item.over8HoursDay];
-                    item.weekendDay = [item.weekendDay];
-                    item.toDate = [item.toDate];
-                    output.push(item);
-                }
-            });
-            setTotal(total);
-            const obj = {
-                month: month,
-                week: week,
-                year: year,
-                date: employeeSalary[employeeSalary.length - 1].date,
-                data: output,
-            };
-            const newData = [];
-            newData.push(obj);
-            setFormatData(groupBy(newData));
-        } else {
-            setTotal(0);
+                setFormatData(groupByYear(result));
+            } else {
+                setTotal(0);
+            }
         }
+
+        formatEmployeeSalary(employeeSalary);
+        
     }, [employeeSalary]);
 
     return (
@@ -132,7 +135,6 @@ const SalaryListResults = ({ className, ...rest }) => {
                                     id="panel1a-header"
                                    
                                 >
-                                    {/* <Typography className={classes.heading}>{`${'Tháng '}${item.month}`}</Typography> */}
                                     <Grid
                                         item
                                         md={12}
@@ -158,7 +160,7 @@ const SalaryListResults = ({ className, ...rest }) => {
                                             >
                                                 {`${'Tổng tiền lương phải trả: '}`}
                                                 <CurrencyFormat
-                                                    value={`${total}`}
+                                                    value={`${totalMoney(item.data)}`}
                                                     displayType={'text'}
                                                     thousandSeparator={true}
                                                     style={{ color: 'red'}}
@@ -170,58 +172,13 @@ const SalaryListResults = ({ className, ...rest }) => {
                                 <AccordionDetails
                                     style={{ display: 'flex', flexDirection: 'column', paddingTop: 0 }}
                                 >
-                                    {item.data.map((item, index) => {
-                                        
-                                            return <div
-                                                    key={index}
-                                                >
-                                                {item.data.map((item, index) => {
-                                                    return <div key={index}>
-                                                            <Accordion>
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMoreIcon />}
-                                                                    aria-controls="panel1a-content"
-                                                                    id="panel1a-header"
-                                                                >
-                                                                    <Grid
-                                                                        item
-                                                                        md={12}
-                                                                        xs={12}
-                                                                    >
-                                                                        <Box
-                                                                            alignItems="center"
-                                                                            display="flex"
-                                                                            flexDirection="row"
-                                                                            style={{ marginLeft: 15, marginTop: 10 }}
-                                                                        >
-                                                                            <Typography
-                                                                                color="textSecondary"
-                                                                                variant="body2"
-                                                                            >
-                                                                                {`${'Ngày quản lý tính lương: '}`} 
-                                                                            </Typography>
-                                                                            <Typography
-                                                                                color="textSecondary"
-                                                                                variant="body2"
-                                                                                style={{ marginLeft: 5, fontWeight: '600'}}
-                                                                            >
-                                                                                {`${moment(item.date).format('DD-MM-YYYY')}`} 
-                                                                            </Typography>
-                                                                        </Box>
-                                                                    </Grid>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <SalaryTableResults 
-                                                                        customers={item.data}
-                                                                        style={{ marginTop: 10, width: '100%' }}
-                                                                        date={item.date}
-                                                                    />
-                                                                </AccordionDetails>
-                                                            </Accordion>
-                                                    </div>
-                                                })}
-                                            </div>
-                                        })}
+                                    <AccordionDetails>
+                                        <SalaryTableResults 
+                                            customers={item.data}
+                                            style={{ marginTop: 10, width: '100%' }}
+                                            date={item.date}
+                                        />
+                                    </AccordionDetails>
                                 </AccordionDetails>
                             </Accordion>
                         </div>
