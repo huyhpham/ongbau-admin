@@ -124,6 +124,7 @@ const SalaryResults = ({ className, customers, ...rest }) => {
           pageSize: 10,
           exportButton: true,
           exportFileName: `Bảng lương tháng ${values.month}${'/'}${values.year}`,
+          exportAllData: true
         }}
         actions={[
           {

@@ -54,6 +54,8 @@ const SalaryListResults = ({ className, ...rest }) => {
                 });
             });
 
+            console.log(tempArray);
+
             var output = [];
             newArray.forEach(function(item) {
                 var existing = output.filter(function(v, i) {
