@@ -37,19 +37,15 @@ const SalaryListResults = ({ className, ...rest }) => {
         [total, setTotal] = useState(0);
     
     const totalMoney = (array) => {
-        console.log(array);
         let total = 0;
         array.forEach((item) => {
             if(item.totalMoney.length !== 1) {
-                item.totalMoney.forEach((item2) => {
-                    total  += Number(item2);
-                })
+                total += item.totalMoney.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
             } else {
                 total += Number(item.totalMoney);
             }
-            
         });
-
+        
         return total;
     }
 
@@ -62,10 +58,8 @@ const SalaryListResults = ({ className, ...rest }) => {
                 await tempArray.forEach((item1) => {
                     item1.data.forEach((item2) => {
                         var newArray = [];
-                        let total = 0;
                         item2.data.forEach((item3) => {
                             item3.data.map((item4) => {
-                                total += Number(item4.totalMoney);
                                 newArray.push(item4);
                             });
                             
